@@ -1,0 +1,8 @@
+from fastapi import APIRouter, Depends
+from app.api.v1.endpoints import chatbot, budgetPredict
+from app.security import get_api_key
+
+api_router = APIRouter()
+# TODO api_router = APIRouter(dependencies=[Depends(get_api_key)])
+api_router.include_router(chatbot.router, prefix="/chatbot", tags=["Chatbot"])
+api_router.include_router(budgetPredict.router, prefix="/prediction", tags=["Prédiction de budget"])
