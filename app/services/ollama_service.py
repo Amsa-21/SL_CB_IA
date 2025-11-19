@@ -1,9 +1,23 @@
-import logging
-import pandas as pd
-import httpx
 import asyncio
-from app.services.functions import get_ext_data_for_llm, find_res, add_br_outside_blocks, get_data_for_llm, parse_user_query, count_tokens, get_mapping, get_rules, re, datetime, convert_markdown_to_html
-from app.core.config import OLLAMA_URL, GPT, SOELOG
+import logging
+
+import httpx
+import pandas as pd
+
+from app.core.config import GPT, OLLAMA_URL, SOELOG
+from app.services.functions import (
+    add_br_outside_blocks,
+    convert_markdown_to_html,
+    count_tokens,
+    datetime,
+    find_res,
+    get_data_for_llm,
+    get_ext_data_for_llm,
+    get_mapping,
+    get_rules,
+    parse_user_query,
+    re,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -46,17 +60,16 @@ async def ask_ollama(
     prompt_data = None
     try:
         lexiques = await get_mapping()
-        sa_label = str(context_data.iloc[1,0])
-        ext_sa_fk, resid = find_res(question, residences, sa_label)
+        ext_sa, resids = await find_res(question, residences)
 
-        if ext_sa_fk:
+        if ext_sa:
+            is_not_empty=True
             parametres, prompt_data = await get_ext_data_for_llm(
                 question,
                 context_data,
                 sa_fk,
-                ext_sa_fk,
                 form_fk,
-                resid,
+                resids,
                 lexiques
             )
         else:
@@ -111,7 +124,7 @@ async def ask_ollama(
             "ATTENTION : lors des calculs, respecte la hiérarchie des rubriques. Ne mentionne pas les codes hiérarchiques dans la réponse."
         )
 
-        if (is_not_empty or ext_sa_fk) and prompt_data:
+        if (is_not_empty or ext_sa) and prompt_data:
             if count_tokens(str(prompt_data)) > 400:
                 rules.append("Réponds en un seul paragraphe concise sans entrer dans les détails ligne à ligne.")
             prompt = (
@@ -130,7 +143,7 @@ async def ask_ollama(
                 f"QUESTION: {question}\n"
                 f"{pd_str}"
                 "\nRéponds en deux phrases au maximum. "
-                "Si une information manque, invite à contacter le contrôleur de gestion (contexte(R, B ou P), année). "
+                "Si une information manque, invite à contacter le contrôleur de gestion avec les informations sur le contexte (Réel, Budget ou Projeté) et l'année. "
                 "Si c'est une salutation, réponds poliment et demande le besoin d'analyse du jour."
             )
 
@@ -153,7 +166,7 @@ async def ask_ollama(
             "stream": False,
             "keep_alive": -1,
             "options": {
-                "temperature": 0.3, # réponse déterministe
+                "temperature": 0.1,   # réponse très déterministe
             }
         }
         et_prompt = datetime.now()
@@ -188,6 +201,9 @@ async def ask_ollama(
                         content = parts[1]
                     else:
                         content = content
+                    if not is_not_empty and prompt_data:
+                        content += "\n"
+                        content += prompt_data.split(".")[3]
                     content = convert_markdown_to_html(content)
                     content = content.lstrip('\n')
                     content = content.replace("\r\n", "\n")

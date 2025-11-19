@@ -17,7 +17,7 @@ USER_FK = config("USER_FK", cast=int, default=8)
 CONTEXT_LENGTH = config("CONTEXT_LENGTH", cast=int, default=0)
 NIVEAU_HIERARCHIE = config("NIVEAU_HIERARCHIE", cast=int, default=2)
 HISTORY_LENGTH = config("HISTORY_LENGTH", cast=int, default=3)
-N_NEIGHBORS = config("N_NEIGHBORS", cast=int, default=3)
+N_NEIGHBORS = config("N_NEIGHBORS", cast=int, default=2)
 
 # Project settings
 PROJECT_NAME: str = "API Soelog"

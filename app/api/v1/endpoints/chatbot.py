@@ -1,20 +1,40 @@
+import base64
+import io
+import json
 import logging
+import pickle
 import uuid
-import pandas as pd
+
 from fastapi import APIRouter, HTTPException
+from fastapi.responses import HTMLResponse
+import matplotlib.pyplot as plt
+import pandas as pd
+import redis
+from wordcloud import WordCloud
+
 from app.core import config
 from app.models.classifier import predict_category
-from app.schemas.schemas import InitSessionRequest, InitSessionResponse, ChatRequest, ChatResponse, EndSessionRequest, EndSessionResponse, WordCloudResponse
+from app.schemas.schemas import (
+    ChatRequest,
+    ChatResponse,
+    EndSessionRequest,
+    EndSessionResponse,
+    InitSessionRequest,
+    InitSessionResponse,
+    WordCloudResponse,
+)
+from app.services.functions import (
+    count_tokens,
+    create_simplified_hierarchy,
+    detect_keywords,
+    execute_sp,
+    execute_sp,
+    format_time,
+    from_cat_to_fk,
+    get_mapping,
+    preprocessing_data,
+)
 from app.services.ollama_service import ask_ollama, datetime
-from fastapi.responses import HTMLResponse
-import json
-import redis
-import pickle
-from wordcloud import WordCloud
-import matplotlib.pyplot as plt
-import io
-import base64
-from app.services.functions import detect_keywords, preprocessing_data, execute_sp, count_tokens, from_cat_to_fk, format_time, get_mapping, execute_sp, create_simplified_hierarchy
 
 router = APIRouter()
 logger = logging.getLogger(__name__)

@@ -126,11 +126,18 @@ def train_classifier(questions: list, categories: list):
         logger.error(f"Erreur lors de l'entraînement du classifieur : {e}")
         raise
 
-def predict_category(text: str, vectorizer: TfidfVectorizer, clf: RandomForestClassifier, nlp, french_stopwords: list, lexiques: dict, threshold: float = .7) -> tuple:
+def predict_category(
+    text: str, 
+    vectorizer: TfidfVectorizer, 
+    clf: RandomForestClassifier, 
+    nlp, 
+    french_stopwords: list, 
+    lexiques: dict, 
+    threshold: float = .6) -> tuple:
     """
     Prédit la catégorie d'un texte en utilisant un classifieur ML.
     Si la confiance dans la prédiction ML est insuffisante, un fallback est effectué sur une classification par mots-clés/lexique.
-    
+
     Arguments :
         - text : str, le texte à classer
         - vectorizer : TfidfVectorizer entraîné
@@ -145,12 +152,12 @@ def predict_category(text: str, vectorizer: TfidfVectorizer, clf: RandomForestCl
         - score : float, score de confiance de la prédiction
         - mode : str, "ml" pour machine learning ou "kw" pour fallback lexique
     """
-    
+
     test_vect = vectorizer.transform([text])
     proba = clf.predict_proba(test_vect)[0]
     cat = clf.predict(test_vect)[0]
     score = max(proba)
-    
+
     if score > threshold:
         return cat, score, "Machine Learning"
     else:

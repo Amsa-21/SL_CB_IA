@@ -1,17 +1,19 @@
-from sqlalchemy import text
-from sqlalchemy.exc import ProgrammingError
-from app.db.session import get_session
-from typing import List, Dict, Any
-import pandas as pd
+from datetime import datetime, timedelta
+import inspect
+import json
 import logging
 import re
-import json
-from datetime import datetime, timedelta
+from typing import Any, Dict, List
 import unicodedata
-from thefuzz import fuzz
+
 import markdown as _md
+import pandas as pd
+from sqlalchemy import text
+from sqlalchemy.exc import ProgrammingError
+from thefuzz import fuzz
+
 from app.core import config
-import inspect
+from app.db.session import get_session
 
 logger = logging.getLogger(__name__)
 
@@ -345,7 +347,7 @@ async def parse_user_query(
     def _define_year(question: str):
         annees = set(map(int, re.findall(r"\b20\d{2}\b", question)))
         
-        pattern_2digit = r"\b(?:Budget|Prev|Reel)\s*'?(\d{2})\b"
+        pattern_2digit = r"\b(?:Budget|Réel|Reel)\s*'?(\d{2})\b"
         matches_2digit = re.findall(pattern_2digit, question, re.IGNORECASE)
         for match in matches_2digit:
             yy = int(match)
@@ -632,10 +634,13 @@ async def get_data_for_llm(
             return (999999,)
         return tuple(int(n) for n in nums)
 
-    def _filter_constant_columns(cols):
-        if df_filtre is not None and len(df_filtre) >= 2:
-            constant_columns = cols
+    def _filter_constant_columns(cols: list):
+        EXCLUDE = {"Lignes", "Montant"}
+        if df_filtre is not None and len(df_filtre) > 0:
+            constant_columns = cols.copy()
             for col_name in constant_columns:
+                if col_name in EXCLUDE:
+                    continue
                 if col_name in df_filtre.columns and df_filtre[col_name].nunique() == 1:
                     cols = [c for c in cols if c != col_name]
         return cols
@@ -765,6 +770,7 @@ async def get_data_for_llm(
             colonnes_tri.append('Mois')
         colonnes_tri.extend(['Nature de l\'écriture', 'Lignes'])
 
+
     colonnes_finales = _filter_constant_columns(colonnes_finales)
     colonnes_tri = _filter_constant_columns(colonnes_tri)
     tri_effectif = [col for col in colonnes_tri if col in df_filtre.columns]
@@ -784,10 +790,11 @@ async def get_data_for_llm(
     df_final = df_filtre[cols_for_sort].sort_values(by=tri_effectif).reset_index(drop=True)
     if need_code_sort:
         df_final = df_final.drop(columns=['_code_sort'])
-
     # * Case: Line empty * #
-    if lignes and lignes[0] not in df_final["Lignes"].values:
-        logger.debug(f"La ligne '{lignes[0]}' ne contient aucune valeur")
+    if lignes and lignes[0] not in df_final["Lignes"].to_list():
+        if not types_valeur:
+            return False, None
+
         res = await execute_sp(
             "dbo.sp_simBudLines",
             {
@@ -992,7 +999,7 @@ def get_children_by_label(data: list[dict], target_label: str):
     return None
 
 @log_function_call
-def find_res(question: str, df_residences: pd.DataFrame, sa_label: str, threshold: int = 50):
+async def find_res(question: str, df_residences: pd.DataFrame, threshold: int = 50):
     def _strip_accents(text: str) -> str:
         """
         Supprime les accents et normalise la casse/ponctuation dans une chaîne pour faciliter les comparaisons.
@@ -1014,37 +1021,55 @@ def find_res(question: str, df_residences: pd.DataFrame, sa_label: str, threshol
         s = re.sub(r"\s+", " ", s.lower()).strip()
         return s
 
+    async def _check_all_res(question: str) -> bool:
+        question_norm = _strip_accents(question.lower())
+        res = await get_mapping()
+        keywords_autres_res = res["Autre résidence"]
+        for kw in keywords_autres_res:
+            if fuzz.partial_ratio(question_norm, kw) > 70:
+                return True
+        return False
+
     LISTE_RES = df_residences["sa"].to_list()
-    q = _strip_accents(question)
-    q_tokens = set(re.findall(r"\w+", q))
-    results = {}
-    for ligne in LISTE_RES:
-        ln = _strip_accents(ligne)
-        ln_tokens = set(re.findall(r"\w+", ln))
-        # 1) Strong rule: all tokens of label present in question (with plural tolerance)
-        if ln_tokens and ln_tokens.issubset({t.rstrip('s') for t in q_tokens} | q_tokens):
-            results[ligne] = 100
-            continue
-        # 2) Fuzzy fallback
-        score = fuzz.token_set_ratio(q, ln)
-        if score >= threshold:
-            results[ligne] = max(results.get(ligne, 0), score)
-    # trier par score décroissant et retourner
-    ordered = sorted(results.items(), key=lambda x: -x[1])
-    if ordered:
-        lf = str(ordered[0][0])
-        if lf != sa_label:
-            return int(df_residences[df_residences["sa"]==lf]["sa_fk"].iloc[0]), lf
-    return None, None
+
+    is_all_res = await _check_all_res(question)
+    if is_all_res:
+        res = []
+        for resid in LISTE_RES:
+            sa_fk_value = int(df_residences[df_residences["sa"] == resid]["sa_fk"].iloc[0])
+            res.append((sa_fk_value, resid))
+        return True, res
+    else:
+        results = {}
+        q = _strip_accents(question)
+        q_tokens = set(re.findall(r"\w+", q))
+        for ligne in LISTE_RES:
+            ln = _strip_accents(ligne)
+            ln_tokens = set(re.findall(r"\w+", ln))
+            # 1) Strong rule: all tokens of label present in question (with plural tolerance)
+            if ln_tokens and ln_tokens.issubset({str(t).rstrip('s') for t in q_tokens} | q_tokens):
+                results[ligne] = 100
+                continue
+            # 2) Fuzzy fallback
+            score = fuzz.token_set_ratio(q, ln)
+            if score >= threshold:
+                results[ligne] = max(results.get(ligne, 0), score)
+        # trier par score décroissant et retourner
+        ordered = sorted(results.items(), key=lambda x: -x[1])
+        if ordered:
+            for i, ln in enumerate(ordered):
+                lf = ordered[i][0]
+                ordered[i]=int(df_residences[df_residences["sa"]==lf]["sa_fk"].iloc[0]), ordered[i][0]
+            return True, ordered
+        return False, None
 
 @log_function_call
 async def get_ext_data_for_llm(
     question: str, 
     context_data: pd.DataFrame, 
     sa_fk: int, 
-    ext_sa_fk: int, 
     form_fk: int, 
-    residence: str, 
+    residences: str, 
     synonymes_groupes: dict) -> str:
     """
     Récupère et prépare les données de contexte et la hiérarchie simplifiée pour un LLM à partir d'une résidence sélectionnée.
@@ -1060,17 +1085,14 @@ async def get_ext_data_for_llm(
         str
     """
 
-    try:
-        data = await execute_sp(
-            "ia.sp_simBudFormSA_one", 
-            {
-                "user_fk": config.USER_FK, 
-                "sa_fk": ext_sa_fk, 
-                "form_fk": form_fk
-            }
+    def _afficher_infos_residence(label, prompt):
+        _, nom_res = str(label).split(' - ', 1)
+        return (
+            f"Résidence : {nom_res}\n"
+            f"{prompt}\n"
         )
-        json_string = data[0].get('EcrituresDetails')
-        
+
+    try:
         res = await execute_sp(
             "dbo.sp_simBudLines",
             {
@@ -1082,40 +1104,49 @@ async def get_ext_data_for_llm(
             }
         )
         simple_dict = create_simplified_hierarchy(res)
-    
         param = await parse_user_query(question, synonymes_groupes, simple_dict)
-        if not json_string:
-            logger.warning(f"Aucune donnée d'écriture trouvée pour la résidence demandée ({residence}).")
-            success, prompt = await get_data_for_llm(context_data, simple_dict, sa_fk, form_fk, **param)
-            if success:
-                return param, prompt
-        data_records = json.loads(json_string)
-        ext_context_data = pd.DataFrame(data_records)
-        logger.info(f"Données d'écriture extraites pour la résidence {residence}, nombre de lignes: {len(ext_context_data)}")
+        if not param["types_valeur"]:
+            logger.warning(f"Impossible de préparer les prompts nécessaires: 'types_valeur' est vide.")
+            return param, None
+        datas = []
+        success, prompt = await get_data_for_llm(context_data, simple_dict, sa_fk, form_fk, **param)
+        if success:
+            datas.append((context_data.iloc[1,0], prompt))
 
-        ext_context_data = preprocessing_data(ext_context_data, simple_dict).copy()
-
-        if str(context_data.iloc[1,0]) == str(residence):
-            success, prompt = await get_data_for_llm(context_data, simple_dict, sa_fk, form_fk, **param)
+        for line in residences:
+            ext_sa_fk, resid = line
+            data = await execute_sp(
+                "ia.sp_simBudFormSA_one", 
+                {
+                    "user_fk": config.USER_FK, 
+                    "sa_fk": ext_sa_fk, 
+                    "form_fk": form_fk
+                }
+            )
+            json_string = data[0].get('EcrituresDetails')
+            if not json_string:
+                logger.warning(f"Aucune donnée d'écriture trouvée pour la résidence demandée ({ext_sa_fk}, {resid}).")
+                continue
+            data_records = json.loads(json_string)
+            ext_context_data = pd.DataFrame(data_records)
+            ext_context_data = preprocessing_data(ext_context_data, simple_dict).copy()
+            if str(context_data.iloc[1,0]) == str(ext_context_data.iloc[1,0]):
+                continue
+            success, prompt = await get_data_for_llm(ext_context_data, simple_dict, ext_sa_fk, form_fk, **param)
             if success:
-                return param, prompt
+                datas.append((resid, prompt))
+
+        if datas:
+            mds = ""
+            for resid, prompt in datas:
+                mds += str(_afficher_infos_residence(resid, prompt))
+            return param, mds
         else:
-            success_1, prompt_1 = await get_data_for_llm(context_data, simple_dict, sa_fk, form_fk, **param)
-            success_2, prompt_2 = await get_data_for_llm(ext_context_data, simple_dict, ext_sa_fk, form_fk, **param)
-            if success_1 and success_2:
-                logger.info(f"Les prompts pour les deux résidences ont été générés avec succès pour {residence}.")
-                return param, (
-                    f"Code analytique: {str(context_data.iloc[1,0]).split(' - ')[0]}, Nom de la résidence: {str(context_data.iloc[1,0]).split(' - ')[1]}\n"
-                    f"{prompt_1}\n\n"
-                    f"Code analytique: {str(residence).split(' - ')[0]}, Nom de la résidence: {str(residence).split(' - ')[1]}\n"
-                    f"{prompt_2}"
-                )
-            else:
-                logger.warning(f"Impossible de préparer les prompts nécessaires pour la résidence {residence}.")
-                return param, None
+            logger.warning(f"Impossible de préparer les prompts nécessaires.")
+            return param, None
 
     except Exception as exc:
-        logger.error(f"Erreur lors de la préparation des données pour le LLM (résidence {residence}): {exc}")
+        logger.error(f"Erreur lors de la préparation des données pour le LLM: {exc}")
         raise RuntimeError(
-            f"Échec de la préparation des données pour le LLM concernant la résidence '{residence}'. Voir les logs pour plus de détails."
+            f"Échec de la préparation des données pour le LLM. Voir les logs pour plus de détails."
         ) from exc
