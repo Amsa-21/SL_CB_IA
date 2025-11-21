@@ -31,8 +31,7 @@ async def ask_ollama(
     simple_dict: list[dict],
     sa_fk: int,
     form_fk: int,
-    residences: pd.DataFrame
-    ) -> str:
+    residences: pd.DataFrame) -> str:
     """
     Interroge le modèle Ollama avec les données de contexte et un prompt, puis retourne la réponse.
 
@@ -118,7 +117,7 @@ async def ask_ollama(
         rules = await get_rules(category)
         prompt = ""
         prompt_system = (
-            "Tu es un assistant pour contrôleurs de gestion. "
+            "Tu es un assistant français pour contrôleurs de gestion. "
             "Réponds de manière claire et concise. "
             "Utilise uniquement les données fournies, n'invente rien, et reste concis. "
             "ATTENTION : lors des calculs, respecte la hiérarchie des rubriques. Ne mentionne pas les codes hiérarchiques dans la réponse."
@@ -134,7 +133,7 @@ async def ask_ollama(
                 + "\n".join(rules) 
                 + "\nRéponds en deux ou trois phrases au maximum. \n"
                 f"QUESTION: {question}\n"
-                f"{pd_str}"
+                f"{pd_str if pd_str != "" else "Aucune donnée trouvée."}"
             )
         else:
             prompt = (
@@ -201,20 +200,11 @@ async def ask_ollama(
                         content = parts[1]
                     else:
                         content = content
-                    if not is_not_empty and prompt_data:
-                        content += "\n"
-                        content += prompt_data.split(".")[3]
-                    content = convert_markdown_to_html(content)
-                    content = content.lstrip('\n')
-                    content = content.replace("\r\n", "\n")
-                    content = content.replace("\r", "\n")
-                    content = add_br_outside_blocks(content)
-                    content = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", content)
-                    content = re.sub(r"__(.+?)__", r"<b>\1</b>", content)
-                    content = re.sub(r"(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)", r"<i>\1</i>", content)
-                    content = re.sub(r"(?<!_)_(?!_)(.+?)(?<!_)_(?!_)", r"<i>\1</i>", content)
-                    content = re.sub(r"^<br/>\s*", "", content)
-                    content = re.sub(r"<br/>\s*$", "", content)
+                    # TODO
+                    # if not is_not_empty and prompt_data:
+                    #     content += "\n"
+                    #     content += prompt_data.split(".")[3]
+                    content = format_response(content)
                     et_format = datetime.now()
                     return content, st_prompt, et_prompt, st_format, et_format, prompt, model
                 else:
@@ -226,6 +216,20 @@ async def ask_ollama(
     except Exception as e:
         logger.error(f"Une erreur inattendue est survenue : {e}")
         raise
+
+def format_response(content):
+    content = convert_markdown_to_html(content)
+    content = content.lstrip('\n')
+    content = content.replace("\r\n", "\n")
+    content = content.replace("\r", "\n")
+    content = add_br_outside_blocks(content)
+    content = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", content)
+    content = re.sub(r"__(.+?)__", r"<b>\1</b>", content)
+    content = re.sub(r"(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)", r"<i>\1</i>", content)
+    content = re.sub(r"(?<!_)_(?!_)(.+?)(?<!_)_(?!_)", r"<i>\1</i>", content)
+    content = re.sub(r"^<br/>\s*", "", content)
+    content = re.sub(r"<br/>\s*$", "", content)
+    return content
 
 
 async def old_ask_ollama(

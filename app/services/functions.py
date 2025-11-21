@@ -668,9 +668,9 @@ async def get_data_for_llm(
     def _find_siblings_with_neighbors(
         label: str, 
         df_labels_codes: pd.DataFrame, 
-        n_before: int = 0, 
-        n_after: int = 0
-    ) -> str:
+        n_before: int = config.N_NEIGHBORS, 
+        n_after: int = config.N_NEIGHBORS) -> list[str]:
+
         row_mask = df_labels_codes["label"] == label
         if not row_mask.any():
             return []
@@ -713,50 +713,61 @@ async def get_data_for_llm(
         sel: pd.DataFrame = df_siblings.iloc[start:end]
         return sel["label"].to_list()
 
-    async def _detail_cell(
-        sa_fk: int,
-        theYear: int,
-        context: str,
-        theMonth: int,
-        label: str,
-        res: list[dict]
-    ) -> pd.DataFrame:
-        def __filter_columns_by_indices(df: pd.DataFrame, indices: list[int]):
-            existing_indices = [i for i in indices if i < df.shape[1]]
-            return df.iloc[:, existing_indices]
+    def _find_siblings_with_col(
+        annee: int, 
+        mois: int,
+        contexte: str,
+        df_col: pd.DataFrame, 
+        n_before: int = config.N_NEIGHBORS, 
+        n_after: int = config.N_NEIGHBORS) -> list:
 
-        def __get_line_fk(label: str, res: list[dict]=res):
-            df = pd.DataFrame(res).iloc[:, [0, 4]]
-            ser = df[df["label"] == label]["line_id"]
-            return int(ser.iloc[0])
+        if df_col is None or df_col.empty:
+            return []
 
-        lst = await execute_sp(
-            "dbo.sp_simBudValueOne",
-            {
-                "user_fk": 8,
-                "listSA": 0,
-                "line_fk": __get_line_fk(label),
-                "sa_fk": sa_fk,
-                "listCR": 0,
-                "cr_fk": 0,
-                "theYear": theYear,
-                "RB": context,
-                "theMonth": theMonth
-            }
-        )
-        if not lst or not isinstance(lst, list):
-            return pd.DataFrame()
-        
-        indices_to_keep = [3, 10, 12, 14, 15]
-        df = pd.DataFrame(lst)
-        if df.shape[1] >= max(indices_to_keep) + 1:
-            return __filter_columns_by_indices(df, indices_to_keep)
+        mask = (df_col["theYear"] == annee) & (df_col["RB"].str.lower() == contexte.lower())
+        if mois == 0:
+            mask = mask & (df_col["Mois"] == 0)
         else:
-            existing = [i for i in indices_to_keep if i < df.shape[1]]
-            if existing:
-                return __filter_columns_by_indices(df, existing)
-        return pd.DataFrame(lst)["Lignes"].to_list()
+            mask = mask & (df_col["Mois"] == mois)
+        idx_list = df_col[mask].index.tolist()
+        if not idx_list:
+            return []
+        idx = idx_list[0]
+
+        if mois == 0:
+            mois0_indices = df_col[df_col["Mois"] == 0].index.tolist()
+            try:
+                pos_in_mois0 = mois0_indices.index(idx)
+            except ValueError:
+                return []
+            start = max(0, pos_in_mois0 - n_before)
+            end = pos_in_mois0 + n_after + 1
+            indices = mois0_indices[start:end]
+        else:
+            year_contexte_indices = df_col[(df_col["theYear"] == annee) & (df_col["RB"].str.lower() == contexte.lower()) & (df_col["Mois"] != 0)].index.tolist()
+            try:
+                pos_in_year_contexte = year_contexte_indices.index(idx)
+            except ValueError:
+                return []
+            start = max(0, pos_in_year_contexte - n_before)
+            end = pos_in_year_contexte + n_after + 1
+            indices = year_contexte_indices[start:end]
+
+        if not indices:
+            return []
+
+        try:
+            rows = df_col.loc[indices, ["theYear", "Mois", "RB"]]
+        except KeyError:
+            return []
+        cols_labels = ",".join([f"{int(row.theYear)},{int(row.Mois)},{row.RB}" for _, row in rows.iterrows()])
+        return cols_labels
     
+    def _get_line_fk(label: str, res: list[dict]):
+        df = pd.DataFrame(res).iloc[:, [0, 4]]
+        ser: pd.DataFrame = df[df["label"] == label]["line_id"]
+        return int(ser.iloc[0])
+
     if all_annu:
         colonnes_finales = ['Code Hiérarchique', 'Lignes', 'Année', 'Contexte', 'Montant']
         colonnes_tri = ['Code Hiérarchique', 'Année', 'Lignes']
@@ -790,8 +801,9 @@ async def get_data_for_llm(
     df_final = df_filtre[cols_for_sort].sort_values(by=tri_effectif).reset_index(drop=True)
     if need_code_sort:
         df_final = df_final.drop(columns=['_code_sort'])
+
     # * Case: Line empty * #
-    if lignes and lignes[0] not in df_final["Lignes"].to_list():
+    if lignes and list(lignes)[0] not in df_final["Lignes"].to_list():
         if not types_valeur:
             return False, None
 
@@ -806,39 +818,74 @@ async def get_data_for_llm(
             }
         )
         df_labels_codes = _flatten_labels(simple_dict)
-        n: int = config.N_NEIGHBORS
-        lines = _find_siblings_with_neighbors(label=lignes[0], df_labels_codes=df_labels_codes, n_before=n, n_after=n)
-        rows = []
-        for l in lines:
-            if nature_ecriture[0] == "Annuelle":
-                r = await _detail_cell(
-                    sa_fk=sa_fk,
-                    theYear=annees[0],
-                    context=types_valeur[0],
-                    theMonth=0,
-                    label=l,
-                    res=res
-                )
-            else:
-                r = await _detail_cell(
-                    sa_fk=sa_fk,
-                    theYear=annees[0],
-                    context=types_valeur[0],
-                    theMonth=mois[0],
-                    label=l,
-                    res=res
-                )
-            if "Source" in r.columns:
-                sources = ", ".join(r['Source'].unique())
-                rows.append({"Ligne": l, "Source": sources})
-            else:
-                rows.append({"Ligne": l, "Source": "Non disponible"})
-        return False, str(
-            f"La ligne '{lignes[0]}' ne contient aucune valeur. "
-            "Analyse le tableau ci-dessous regroupant les lignes voisines et leurs sources pour expliquer précisément "
-            "(mais brièvement) pourquoi aucune donnée n'est disponible pour cette ligne. "
-            "Comparez avec les voisins pour mieux argumenter l'absence d'information.\n"
-            f"{pd.DataFrame(rows, columns=['Ligne', 'Source']).to_markdown(index=False)}"
+
+        colonne_db = await execute_sp(
+            "dbo.sp_simBudCol",
+            {
+                "user_fk": config.USER_FK,
+                "codeMetier": 'EXP',
+                "form_fk": form_fk,
+                "codeFormType": None,
+                "type_fk": 0,
+                "colYear_fk": 0
+            }
+        )
+        df_col = pd.DataFrame(colonne_db)
+        df_col = df_col[df_col["labelType"]=="Année contexte"][["label", "RB", "Mois", "theYear"]].copy()
+        lines = _find_siblings_with_neighbors(
+            label=lignes[0], 
+            df_labels_codes=df_labels_codes
+        )
+        mois_val = mois[0] if mois and len(mois) > 0 else 0
+        cols = _find_siblings_with_col(
+            annee=annees[0],
+            mois=mois_val,
+            contexte=types_valeur[0],
+            df_col=df_col
+        )
+
+        line_fks = [str(_get_line_fk(l, res)) for l in lines]
+        line_fks_str = ",".join(line_fks)
+        the_line_fk = _get_line_fk(lignes[0], res)
+        
+        lst = await execute_sp(
+            "ia.sp_simBudValueDetails",
+            {
+                "user_fk": 8,
+                "listSA": 0,
+                "line_fk": line_fks_str,
+                "sa_fk": sa_fk,
+                "yearRB": cols,
+            }
+        )
+        df_result = pd.DataFrame(lst)
+        
+        if df_result.empty:
+            return False, None
+        
+        line_info = get_line_info(
+            df_result, 
+            the_line_fk, 
+            annees[0],
+            mois_val,
+            types_valeur[0],
+            lines,
+            lambda label: _get_line_fk(label=label, res=res)
+        )
+
+        col_info = get_col_info(
+            df_result, 
+            the_line_fk,
+            cols
+        )
+        return False, (
+            f"La ligne '{lignes[0]}' n'a aucune valeur. "
+            "Analyse les deux tableaux ci-dessous :\n"
+            " - le premier montre les lignes voisines et leurs sources\n"
+            " - le second montre les colonnes voisines et leurs sources\n"
+            "Explique très brièvement pourquoi cette ligne n'a aucune donnée. "
+            "Compare uniquement avec les voisins (lignes et colonnes) pour justifier l'absence d'information.\n"
+            f"{line_info}\n\n{col_info}"
         )
     
     if df_final.empty:
@@ -1026,7 +1073,7 @@ async def find_res(question: str, df_residences: pd.DataFrame, threshold: int = 
         res = await get_mapping()
         keywords_autres_res = res["Autre résidence"]
         for kw in keywords_autres_res:
-            if fuzz.partial_ratio(question_norm, kw) > 70:
+            if fuzz.partial_ratio(question_norm, kw) > 80:
                 return True
         return False
 
@@ -1125,7 +1172,6 @@ async def get_ext_data_for_llm(
             )
             json_string = data[0].get('EcrituresDetails')
             if not json_string:
-                logger.warning(f"Aucune donnée d'écriture trouvée pour la résidence demandée ({ext_sa_fk}, {resid}).")
                 continue
             data_records = json.loads(json_string)
             ext_context_data = pd.DataFrame(data_records)
@@ -1134,6 +1180,7 @@ async def get_ext_data_for_llm(
                 continue
             success, prompt = await get_data_for_llm(ext_context_data, simple_dict, ext_sa_fk, form_fk, **param)
             if success:
+                prompt = "\n".join(prompt.splitlines()[2:])
                 datas.append((resid, prompt))
 
         if datas:
@@ -1150,3 +1197,64 @@ async def get_ext_data_for_llm(
         raise RuntimeError(
             f"Échec de la préparation des données pour le LLM. Voir les logs pour plus de détails."
         ) from exc
+
+def get_col_info(
+    df_result: pd.DataFrame, 
+    the_line_fk: int,
+    cols: str) -> str:
+
+    df_res = df_result[df_result["line_fk"] == the_line_fk]
+    triplets = [tuple(cols.split(",")[i:i+3]) for i in range(0, len(cols.split(",")), 3)]
+    rows = []
+
+    for an, mo, co in triplets:
+        df_filtered = df_res[
+            (df_res["Contexte"].str.startswith(co)) &
+            (df_res["dateNotFormat"].str[:4] == str(an))
+        ]
+
+        if int(mo) == 0:
+            sources = (
+                ", ".join(df_filtered["Source"].unique())
+                if not df_filtered.empty
+                else "Non disponible"
+            )
+            rows.append({"Année": an, "Contexte": co, "Source": sources})
+
+        else:
+            df_filtered_month = df_filtered[
+                df_filtered["dateNotFormat"].str[5:7] == str(mo).zfill(2)
+            ]
+            sources = (
+                ", ".join(df_filtered_month["Source"].unique())
+                if not df_filtered_month.empty
+                else "Non disponible"
+            )
+            rows.append({"Mois": mo, "Source": sources})
+
+    return pd.DataFrame(rows).to_markdown(index=False)
+
+def get_line_info(
+    df_result: pd.DataFrame, 
+    the_line_fk: int, 
+    annee: str,
+    mois: str,
+    contexte: str,
+    lines: list[str],
+    get_line_fk: callable) -> str:
+
+    rows = []
+    df_result_filtered = df_result[df_result["line_fk"] != the_line_fk]
+    df_result_filtered = df_result_filtered[df_result_filtered["Contexte"].str.startswith(contexte)]
+    df_result_filtered = df_result_filtered[df_result_filtered["dateNotFormat"].str[:4] == str(annee)]
+    if mois != 0:
+        df_result_filtered = df_result_filtered[df_result_filtered["dateNotFormat"].str[5:7] == str(mois).zfill(2)]
+    for l in lines:
+        r = df_result_filtered[df_result_filtered["line_fk"] == get_line_fk(label=l)]
+        if "Source" in r.columns and not r["Source"].empty:
+            sources = ", ".join(r['Source'].unique())
+            rows.append({"Ligne": l, "Source": sources})
+        else:
+            rows.append({"Ligne": l, "Source": "Non disponible"})
+
+    return pd.DataFrame(rows).to_markdown(index=False)

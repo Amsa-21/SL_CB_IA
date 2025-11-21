@@ -34,7 +34,7 @@ from app.services.functions import (
     get_mapping,
     preprocessing_data,
 )
-from app.services.ollama_service import ask_ollama, datetime
+from app.services.ollama_service import ask_ollama, datetime, format_response
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
@@ -173,7 +173,7 @@ async def chat(request: ChatRequest):
         context_data, history_list, simple_dict, sa_fk, form_fk, residences = pickle.loads(res)
         history = list(history_list)
         
-        if len(history) > config.HISTORY_LENGTH*2+1:
+        if len(history) > config.HISTORY_LENGTH*2:
             history = [history[0]] + history[-config.HISTORY_LENGTH*2:]
         lexiques = await get_mapping()
         cat, score, algo = predict_category(
@@ -228,6 +228,7 @@ async def chat(request: ChatRequest):
                     motCle_fks.append(str(motCle_fk))
             except Exception as motcle_exc:
                 logger.warning(f"Erreur lors de l'ajout du mot-clé '{kw}': {motcle_exc}")
+
         try:
             categorie_fk = None
             result = None
@@ -296,8 +297,8 @@ async def chat(request: ChatRequest):
                     {
                         "user_fk": getattr(request, "user_fk", None),
                         "question_fk": question_fk,
-                        "reponse": f"{count_tokens(assistant_response)} - {safe_str(assistant_response)}" if assistant_response is not None else "",
-                        "prompt": f"{count_tokens(prompt)} - {safe_str(prompt.replace('\n', '<br>'))}" if prompt is not None else "",
+                        "reponse": f"{count_tokens(assistant_response)} - {safe_str(assistant_response)}",
+                        "prompt": f"{count_tokens(prompt)} - {safe_str(format_response(prompt))}",
                         "motCle": ",".join(motCle_fks) if motCle_fks else "",
                         "algorithme": algo,
                         "score": safe_score,
