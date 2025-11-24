@@ -127,7 +127,7 @@ async def ask_ollama(
             if count_tokens(str(prompt_data)) > 400:
                 rules.append("Réponds en un seul paragraphe concise sans entrer dans les détails ligne à ligne.")
             prompt = (
-                f"CONTEXTE: La section analytique '{str(context_data.iloc[1,0]).split(' - ')[1]}' "
+                f"CONTEXTE: La section analytique ou résidence '{str(context_data.iloc[1,0]).split(' - ')[1]}' "
                 f"et le formulaire '{context_data.iloc[1,2]}' sont analysés.\n"
                 "Règles de réponse:\n"
                 + "\n".join(rules) 
@@ -137,7 +137,7 @@ async def ask_ollama(
             )
         else:
             prompt = (
-                f"CONTEXTE: La section analytique '{str(context_data.iloc[1,0]).split(' - ')[1]}' "
+                f"CONTEXTE: La section analytique ou résidence '{str(context_data.iloc[1,0]).split(' - ')[1]}' "
                 f"et le formulaire '{context_data.iloc[1,2]}' sont analysés. "
                 f"QUESTION: {question}\n"
                 f"{pd_str}"

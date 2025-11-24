@@ -273,14 +273,53 @@ async def parse_user_query(
         s = re.sub(r"\s+", " ", s.lower()).strip()
         return s
 
-    async def _check_detail(question: str) -> bool:
+    async def _check_detail(question: str, threshold: int = 80) -> bool:
         question_norm = _strip_accents(question.lower())
         res = await get_mapping()
-        keywords_details = res["Détail"]
+        keywords_details: list[str] = res["Détail"]
         for kw in keywords_details:
-            if fuzz.partial_ratio(question_norm, kw) > 80:
+            if fuzz.partial_ratio(question_norm, _strip_accents(kw.lower())) > threshold:
                 return True
         return False
+
+    async def _get_col_info(question: str, threshold: int = 90) -> dict|None:
+        lst = await execute_sp(
+            "dbo.sp_simBudCol",
+            {
+                "user_fk": 8,
+                "codeMetier": 'EXP',
+                "form_fk": 167,
+                "codeFormType": None,
+                "type_fk": 0,
+                "colYear_fk": 0
+            }
+        )
+        df_col = pd.DataFrame(lst)
+        df_col = df_col[df_col["labelType"]=="Année contexte"][["label", "RB", "Mois", "theYear"]].copy()
+        
+        q = _strip_accents(question.lower())
+        q_tokens = set(re.findall(r"\w+", q))
+        LISTE_LIGNES: list[str] = df_col["label"].to_list()
+        results = {}
+        for ligne in LISTE_LIGNES:
+            ln = _strip_accents(ligne.lower())
+            ln_tokens = set(re.findall(r"\w+", ln))
+            if ln_tokens and ln_tokens.issubset({str(t).rstrip('s') for t in q_tokens} | q_tokens):
+                results[ligne] = 100
+                continue
+            score = fuzz.token_set_ratio(q, ln)
+            if score >= threshold:
+                results[ligne] = max(results.get(ligne, 0), score)
+        if results:
+            line = df_col[df_col["label"] == sorted(results.items(), key=lambda x: -x[1])[0][0]]
+            return {
+                "label": line["label"].iloc[0],
+                "annee": int(line["theYear"].iloc[0]),
+                "mois": int(line["Mois"].iloc[0]),
+                "contexte": line["RB"].iloc[0]
+            }    
+        else:
+            None
 
     doc = config.nlp(query)
     query_lower = query.lower()
@@ -294,7 +333,7 @@ async def parse_user_query(
     }
 
     # GROUPE
-    def _select_groupe(question: str, threshold: float = 70):
+    def _select_groupe(question: str, threshold: float = 70) -> list:
         query_norm = _strip_accents(question)
 
         best_matches: dict[str, float] = {}
@@ -322,7 +361,7 @@ async def parse_user_query(
     params['groupes'] = _select_groupe(query_lower)
 
     # TYPE DE VALEUR
-    def _define_type(question: str):
+    def _define_contexte(question: str) -> list:
         types_valeur = set()
         query_lower_noacc = _strip_accents(question)
         if re.search(r"reel|realise|actuel", query_lower_noacc):
@@ -341,10 +380,10 @@ async def parse_user_query(
                 if re.search(r"prevision|prevu|projection|project|prev", ent_text_noacc):
                     types_valeur.add('P')
         return sorted(types_valeur)
-    params['types_valeur'] = _define_type(query_lower)
+    params['types_valeur'] = _define_contexte(query_lower)
 
     # ANNEE
-    def _define_year(question: str):
+    def _define_year(question: str) -> list:
         annees = set(map(int, re.findall(r"\b20\d{2}\b", question)))
         
         pattern_2digit = r"\b(?:Budget|Réel|Reel)\s*'?(\d{2})\b"
@@ -402,7 +441,7 @@ async def parse_user_query(
     params['annees'] = _define_year(query_lower)
 
     # MOIS
-    def _define_month(question: str):
+    def _define_month(question: str) -> list:
         mois_map = {
             1: [r"janv(?:ier)?", r"jan"],
             2: [r"f[ée]vr(?:ier)?", r"fev"],
@@ -461,7 +500,7 @@ async def parse_user_query(
             ]
             for pat, mois_list in trimestre_regex:
                 if re.search(pat, query_norm):
-                    mois = set(mois_list)
+                    mois.update(mois_list)
                     break
 
             semestre_regex = [
@@ -470,22 +509,22 @@ async def parse_user_query(
             ]
             for pat, mois_list in semestre_regex:
                 if re.search(pat, query_norm):
-                    mois = set(mois_list)
+                    mois.update(mois_list)
                     break
 
             if re.search(r"\btous les mois\b", query_norm):
-                mois = set(range(1, 13))
+                mois.update(range(1, 13))
             elif re.search(r"\bmois courant\b", query_norm):
-                mois = {datetime.now().month}
+                mois.update([datetime.now().month])
             elif re.search(r"\bmois dernier\b", query_norm):
-                mois = {datetime.now().month - 1 if datetime.now().month > 1 else 12}
+                mois.update([datetime.now().month - 1 if datetime.now().month > 1 else 12])
             elif re.search(r"\bmois prochain\b", query_norm):
-                mois = {datetime.now().month + 1 if datetime.now().month < 12 else 1}
+                mois.update([datetime.now().month + 1 if datetime.now().month < 12 else 1])
         return sorted(mois)
     params['mois'] = _define_month(query_lower)
 
     # NATURE ECRITURE
-    def _select_nature_ecriture(question: str):
+    def _select_nature_ecriture(question: str) -> list:
         nature_ecritures = set()
         if re.search(r"\b(mensuel(le)?|mois|trimestre|semestre|janvier|février|fevrier|mars|avril|mai|juin|juillet|août|aout|septembre|octobre|novembre|décembre|decembre)\b", question):
             nature_ecritures.add('Mensuelle')
@@ -503,17 +542,37 @@ async def parse_user_query(
 
     # LIGNES
     result_list = extract_all_descendants_for_list(simple_dict)
-    LISTE_LIGNES = [label for sublist in result_list for label in sublist]
+    LISTE_LIGNES: list[str] = [label for sublist in result_list for label in sublist]
     async def _match_lignes(question: str, threshold: int = 75, return_scores: bool = False):
-        q = _strip_accents(question)
+        q = _strip_accents(question.lower())
         q_tokens = set(re.findall(r"\w+", q))
         results = {}
+        # Plus grande tolérance au singulier/pluriel : on compare formes singulier et pluriel, pour chaque token de la ligne et de la question
+        def _sing_plur_forms(token):
+            if token.endswith('s'):
+                return {token, token[:-1]}
+            else:
+                return {token, token + 's'}
+        
         for ligne in LISTE_LIGNES:
-            ln = _strip_accents(ligne)
-            ln_tokens = set(re.findall(r"\w+", ln))
-            if ln_tokens and ln_tokens.issubset({t.rstrip('s') for t in q_tokens} | q_tokens):
+            ln = _strip_accents(ligne.lower())
+            ln_tokens_raw = set(re.findall(r"\w+", ln))
+            q_tokens_raw = q_tokens
+
+            # Génère toutes formes singulier/pluriel pour ln_tokens et q_tokens
+            ln_tokens_all = set()
+            for t in ln_tokens_raw:
+                ln_tokens_all.update(_sing_plur_forms(t))
+            q_tokens_all = set()
+            for t in q_tokens_raw:
+                q_tokens_all.update(_sing_plur_forms(t))
+            
+            # Test : Tous les tokens 'ligne' (sing/plur) présents dans q (sing/plur)
+            if ln_tokens_all and ln_tokens_all.issubset(q_tokens_all):
                 results[ligne] = 100
                 continue
+
+            # Fallback fuzzy
             score = fuzz.token_set_ratio(q, ln)
             if score >= threshold:
                 results[ligne] = max(results.get(ligne, 0), score)
@@ -527,6 +586,20 @@ async def parse_user_query(
             return set(enfants + [lbl for lbl, _ in ordered])
         return ordered if return_scores else [lbl for lbl, _ in ordered]
     params['lignes'] = await _match_lignes(query_lower)
+
+    col_infos = await _get_col_info(query_lower)
+    if col_infos:
+        params['annees'].append(col_infos["annee"])
+        if col_infos["mois"] == 0:
+            params['nature_ecriture'].append("Annuelle")
+        else:
+            params['nature_ecriture'].append("Mensuelle")
+            params['mois'].append(col_infos["mois"])
+        params['types_valeur'].append(col_infos["contexte"])
+
+    for k in ['groupes', 'types_valeur', 'annees', 'nature_ecriture', 'lignes', 'mois']:
+        if isinstance(params.get(k), list):
+            params[k] = list(set(params[k]))
 
     return params
 
@@ -884,7 +957,9 @@ async def get_data_for_llm(
             " - le premier montre les lignes voisines et leurs sources\n"
             " - le second montre les colonnes voisines et leurs sources\n"
             "Explique très brièvement pourquoi cette ligne n'a aucune donnée. "
-            "Compare uniquement avec les voisins (lignes et colonnes) pour justifier l'absence d'information.\n"
+            "Compare uniquement avec les voisins (lignes et colonnes) pour justifier l'absence. "
+            "Si les colonnes voisines pour cette même ligne contiennent des sources, spécifie-les (année, mois, contexte, source). "
+            "Réponse 1-3 phrases, sans paragraphes, directe.\n"
             f"{line_info}\n\n{col_info}"
         )
     
@@ -1068,18 +1143,25 @@ async def find_res(question: str, df_residences: pd.DataFrame, threshold: int = 
         s = re.sub(r"\s+", " ", s.lower()).strip()
         return s
 
-    async def _check_all_res(question: str) -> bool:
+    async def _check_all_res(question: str, threshold: int = 80) -> tuple:
         question_norm = _strip_accents(question.lower())
         res = await get_mapping()
-        keywords_autres_res = res["Autre résidence"]
+        keywords_autres_res: list[str] = res["Autre résidence"]
         for kw in keywords_autres_res:
-            if fuzz.partial_ratio(question_norm, kw) > 80:
-                return True
-        return False
+            if fuzz.partial_ratio(question_norm, _strip_accents(kw.lower())) > threshold:
+                exception = "Quel est le nom de la résidence ?"
+                if fuzz.partial_ratio(question_norm, _strip_accents(exception.lower())) > 90:
+                    return True, False
+                return True, True
+        return False, True
 
     LISTE_RES = df_residences["sa"].to_list()
 
-    is_all_res = await _check_all_res(question)
+    is_all_res, if_res = await _check_all_res(question)
+    
+    if not if_res:
+        return False, None
+
     if is_all_res:
         res = []
         for resid in LISTE_RES:
@@ -1198,6 +1280,7 @@ async def get_ext_data_for_llm(
             f"Échec de la préparation des données pour le LLM. Voir les logs pour plus de détails."
         ) from exc
 
+@log_function_call
 def get_col_info(
     df_result: pd.DataFrame, 
     the_line_fk: int,
@@ -1234,6 +1317,7 @@ def get_col_info(
 
     return pd.DataFrame(rows).to_markdown(index=False)
 
+@log_function_call
 def get_line_info(
     df_result: pd.DataFrame, 
     the_line_fk: int, 

@@ -2,7 +2,6 @@ import logging
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.ensemble import RandomForestClassifier
 from collections import Counter
-from .__init__ import *
 
 logger = logging.getLogger(__name__)
 
@@ -60,7 +59,7 @@ def classify(text: str, nlp, french_stopwords: list, lexique: dict, min_score_th
 
     for cat, mots in lexique_lemmatise.items():
         freq_score = sum(counts[tok] for tok in mots if tok in counts)
-        exact_score = sum(1 for mot in lexique[cat] if mot.lower() in text_lower)
+        exact_score = sum(1 for mot in lexique[cat] if str(mot).lower() in text_lower)
         if mots:
             coverage[cat] = len([tok for tok in mots if tok in counts]) / len(mots)
         else:
