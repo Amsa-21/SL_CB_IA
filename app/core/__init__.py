@@ -1,10 +1,11 @@
-from app.services.functions import execute_sp
-from functools import lru_cache
 import asyncio
+from functools import lru_cache
 import logging
 
 import nest_asyncio
 import pandas as pd
+
+from app.services.functions import execute_sp
 
 logger = logging.getLogger(__name__)
 nest_asyncio.apply()

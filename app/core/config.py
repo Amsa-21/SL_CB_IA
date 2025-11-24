@@ -1,6 +1,8 @@
+import logging
+
 from decouple import config
 import spacy
-import logging
+
 from app.models.classifier import train_classifier
 
 DATABASE_URL = config("DATABASE_URL", default="mssql+aioodbc://amsata:amsata@Soelog")

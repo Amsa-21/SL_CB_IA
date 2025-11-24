@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends
-from app.api.v1.endpoints import chatbot, budgetPredict
+
+from app.api.v1.endpoints import budgetPredict, chatbot
 from app.security import get_api_key
 
 api_router = APIRouter()

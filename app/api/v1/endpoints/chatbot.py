@@ -28,7 +28,6 @@ from app.services.functions import (
     create_simplified_hierarchy,
     detect_keywords,
     execute_sp,
-    execute_sp,
     format_time,
     from_cat_to_fk,
     get_mapping,

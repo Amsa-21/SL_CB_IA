@@ -1,5 +1,6 @@
-from fastapi import Security, HTTPException, status
+from fastapi import HTTPException, Security, status
 from fastapi.security import APIKeyHeader
+
 from app.core.config import API_KEY
 
 api_key_header = APIKeyHeader(name="API_KEY")

@@ -1,7 +1,8 @@
-import logging
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.ensemble import RandomForestClassifier
 from collections import Counter
+import logging
+
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.feature_extraction.text import TfidfVectorizer
 
 logger = logging.getLogger(__name__)
 
