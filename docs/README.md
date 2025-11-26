@@ -41,9 +41,4 @@ Client → FastAPI (`app/main.py`)
 - Scripts/tests exploratoires : `tests/`
 - Logs : `logs/` (info, error, fastapi, stats)
 
-## Améliorations suggérées
-- Activer la vérification `API_KEY` au niveau du router.
-- Ajouter une batterie de tests (unitaires pour `parse_user_query`, `preprocessing_data`, mocks Ollama).
-- Gérer la rotation des fichiers de log pour éviter l’écrasement à chaque démarrage.
-
 
