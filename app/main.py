@@ -16,12 +16,12 @@ os.makedirs(log_dir, exist_ok=True)
 info_log_path = os.path.join(log_dir, 'info.log')
 error_log_path = os.path.join(log_dir, 'error.log')
 
-info_handler = logging.FileHandler(info_log_path, mode='w', encoding='utf-8')
+info_handler = logging.FileHandler(info_log_path, mode='a', encoding='utf-8')
 info_handler.setLevel(logging.INFO)
 info_handler.setFormatter(logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
 info_handler.addFilter(lambda record: record.levelno == logging.INFO)
 
-error_handler = logging.FileHandler(error_log_path, mode='w', encoding='utf-8')
+error_handler = logging.FileHandler(error_log_path, mode='a', encoding='utf-8')
 error_handler.setLevel(logging.ERROR)
 error_handler.setFormatter(logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
 

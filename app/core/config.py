@@ -5,7 +5,8 @@ import spacy
 
 from app.models.classifier import train_classifier
 
-DATABASE_URL = config("DATABASE_URL", default="mssql+aioodbc://amsata:amsata@Soelog")
+DATABASE_URL = config("DATABASE_URL", default="mssql+aioodbc://amsata:amsata@S5db_php")
+DATABASE_URL_IA = config("DATABASE_URL_IA", default="mssql+aioodbc://amsata:amsata@S3IA")
 OLLAMA_URL = config("OLLAMA_URL", default="http://si-5/api/chat")
 
 # * SOELOG = config("OLLAMA_MODEL", default="soelog-model")
@@ -15,13 +16,13 @@ OLLAMA_URL = config("OLLAMA_URL", default="http://si-5/api/chat")
 SOELOG = GPT = config("OLLAMA_MODEL", default="gpt-oss:20b")
 
 NIVEAU_HIERARCHIE = config("NIVEAU_HIERARCHIE", cast=int, default=2)
-CONTEXT_LENGTH = config("CONTEXT_LENGTH", cast=int, default=0)
+CONTEXT_LENGTH = config("CONTEXT_LENGTH", cast=int, default=1)
 HISTORY_LENGTH = config("HISTORY_LENGTH", cast=int, default=3)
 N_NEIGHBORS = config("N_NEIGHBORS", cast=int, default=2)
 USER_FK = config("USER_FK", cast=int, default=8)
 
 # Project settings
-API_KEY = config("API_KEY", default="SpyH5uBV7rzCpDA6iyJBfK5QukZeUBba")
+API_KEY = config("API_KEY", default="SpyH5uBV7rATzCpDA6iyJBfK5QukZeUBba")
 PROJECT_NAME: str = "API Soelog"
 PROJECT_VERSION: str = "1.0"
 

@@ -1,0 +1,155 @@
+Annee,Groupe,Code_H,Ligne_Analytique,2022,2023,2024,2025,2025,2026
+Contexte,,,,Réel,Réel,Réel,Prévision,Budget,Budget
+Mois,,,,12,12,12,12,12,12
+Nature de l'écriture,,,,Annuelle,Annuelle,Annuelle,Annuelle,Annuelle,Annuelle
+0,Chiffre d'affaire,1.,RECETTES,1856015.0,2065453.0,2193409.0,2182306.0,2205868.0,2221683.0
+1,Chiffre d'affaire,1.1.,Loyers logements et parkings HT,1715744.0,1908910.0,2026364.0,2023357.0,2038521.0,2057395.0
+2,Chiffre d'affaire,1.1.1.,CA Locatif Estudines,1709962.0,1903970.0,2019099.0,2017043.0,2031296.0,2050195.0
+3,Chiffre d'affaire,1.1.4.,CA Locatif Parkings,5782.0,4940.0,7265.0,6315.0,7224.0,7200.0
+4,Chiffre d'affaire,1.2.,RECETTES ANNEXES,129946.0,182250.0,203148.0,171106.0,179398.0,176470.0
+5,Chiffre d'affaire,1.2.2.,CA Frais locatif,24051.0,31173.0,26810.0,21597.0,30696.0,23420.0
+6,Chiffre d'affaire,1.2.5.,CA Laverie-Ménage,13666.0,16424.0,16936.0,15624.0,15231.0,17700.0
+7,Chiffre d'affaire,1.2.5.2.,Laverie,13491.0,16319.0,16936.0,15624.0,15231.0,17700.0
+8,Chiffre d'affaire,1.2.5.4.,Ménage supplémentaire,175.0,105.0,0.0,0.0,0.0,0.0
+9,Chiffre d'affaire,1.2.8.,CA Divers,233.0,6383.0,1646.0,3678.0,3501.0,3350.0
+10,Chiffre d'affaire,1.2.9.,Subvention d'exploitation (Rbst format°),-1.0,0.0,0.0,0.0,0.0,0.0
+11,Chiffre d'affaire,1.2.12.,Charges de copro récupérables,91998.0,128270.0,157756.0,130208.0,129970.0,132000.0
+12,Chiffre d'affaire,1.3.,Commission Agence TO,-2253.0,-1914.0,-526.0,-1348.0,-1240.0,-1371.0
+13,Chiffre d'affaire,1.4.,IMPAYES,12578.0,-23793.0,-35577.0,-10810.0,-10810.0,-10810.0
+14,Chiffre d'affaire,1.4.1.,Impayés locataires,11841.0,-17737.0,-8137.0,-10810.0,-10810.0,-10810.0
+15,Chiffre d'affaire,1.4.2.,Impayés Apparthotels,737.0,-6056.0,-27440.0,0.0,0.0,0.0
+16,Charge,2.,CHARGES D'IMMEUBLE DIRECTES,674637.0,613230.0,663916.0,666871.0,650619.0,602278.0
+17,Charge,2.1.,FRAIS DE PERSONNEL,161106.0,163977.0,168150.0,196281.0,202380.0,145653.0
+18,Charge,2.1.1.,Salaires,46528.0,37555.0,84390.0,91891.0,90959.0,80128.0
+19,Charge,2.1.2.,Charges sur salaires,13824.0,13047.0,22108.0,33439.0,27694.0,26467.0
+20,Charge,2.1.3.,Prime,5190.0,6416.0,6605.0,10712.0,8648.0,9481.0
+21,Charge,2.1.6.,Personnel intérimaire,61640.0,66642.0,2112.0,21759.0,37080.0,12000.0
+22,Charge,2.1.8.,Frais Yser - Encadrement et commercial,28231.0,28444.0,31353.0,21677.0,23389.0,0.0
+23,Charge,2.1.9.1.,Autres frais de personnel,382.0,620.0,4740.0,8114.0,880.0,8276.0
+24,Charge,2.1.9.2.,Autres frais de personnel - formation,0.0,25.0,1000.0,500.0,0.0,510.0
+25,Charge,2.1.10.,Prestataires sécurité gardiennage,-78.0,2010.0,786.0,1956.0,1330.0,1995.0
+26,Charge,2.1.10.1.,Prestataire sécurité gardiennage,-78.0,2010.0,786.0,1956.0,1330.0,1995.0
+27,Charge,2.1.11.,Nettoyage Parties Communes,225.0,2795.0,2899.0,3144.0,4016.0,3657.0
+28,Charge,2.1.12.,Nettoyage Parties Privatives,5354.0,6746.0,15028.0,7395.0,8824.0,7531.0
+29,Charge,2.1.14.,Animation,0.0,0.0,0.0,0.0,0.0,0.0
+30,Charge,2.2.,IMPOTS et TAXES DIVERSES,27062.0,3995.0,5502.0,5653.0,6452.0,5766.0
+31,Charge,2.2.2.,Taxe d'ordures ménagères,4146.0,2630.0,4081.0,2973.0,3635.0,3033.0
+32,Charge,2.2.3.,Taxe foncière / Taxe d'habitation,22916.0,1365.0,1421.0,2680.0,2698.0,2734.0
+33,Charge,2.2.3.1.,Taxe foncière / taxe d'habitation,21646.0,0.0,0.0,1234.0,1234.0,1259.0
+34,Charge,2.2.3.2.,Taxe foncière Syndic,1270.0,1365.0,1421.0,1446.0,1464.0,1475.0
+35,Charge,2.2.4.1.,Autres impôts et taxes,0.0,0.0,0.0,0.0,238.0,0.0
+36,Charge,2.3.,ENERGIE,223806.0,236163.0,339699.0,269587.0,273248.0,274429.0
+37,Charge,2.3.1.,EAU : (RSG-REA-YSER-LFP),151793.0,141184.0,258659.0,172217.0,172145.0,175308.0
+38,Charge,2.3.2.,EDF : (RSG-REA-LFP),21558.0,44169.0,20919.0,34400.0,44260.0,35018.0
+39,Charge,2.3.2.1.,EDF - Parties communes : Réel (50200000),15216.0,32404.0,15882.0,29237.0,34545.0,29759.0
+40,Charge,2.3.2.2.,EDF - Parties Privatives,3807.0,7523.0,3574.0,2248.0,5153.0,2289.0
+41,Charge,2.3.2.3.,EDF - Ascenseurs,2535.0,4242.0,1463.0,2915.0,4562.0,2970.0
+42,Charge,2.3.3.,Chauffage - Gaz,50456.0,50810.0,60121.0,62970.0,56843.0,64103.0
+43,Charge,2.4.,CONTRATS DE MAINTENANCE,42782.0,53107.0,48597.0,67030.0,93021.0,69291.0
+44,Charge,2.4.1.,Contrat de maintenance LFP,28043.0,27185.0,33565.0,42927.0,40486.0,44705.0
+45,Charge,2.4.1.2.,Maintenance - chauffage,6650.0,0.0,0.0,3500.0,2776.0,3500.0
+46,Charge,2.4.1.3.,Maintenance - ascenseurs,2888.0,4573.0,4664.0,4990.0,4822.0,5090.0
+47,Charge,2.4.1.5.,Maintenance - parkings,1351.0,1723.0,1034.0,859.0,1077.0,866.0
+48,Charge,2.4.1.6.,Maintenance - espaces verts,3956.0,4152.0,4348.0,5730.0,5559.0,5845.0
+49,Charge,2.4.1.7.,Maintenance - sécurité,5932.0,4030.0,7403.0,12862.0,11263.0,13119.0
+50,Charge,2.4.1.8.,Maintenance - VMC,1207.0,-127.0,2248.0,640.0,640.0,1652.0
+51,Charge,2.4.1.9.,Maintenance - contrats divers,4559.0,11334.0,12368.0,12846.0,12805.0,13103.0
+52,Charge,2.4.1.13.,Maintenance - toiture,1500.0,1500.0,1500.0,1500.0,1545.0,1530.0
+53,Charge,2.4.2.,Autres charges de copropriété,3091.0,13288.0,3227.0,3507.0,13496.0,3577.0
+54,Charge,2.4.2.1.,Autres charges - 51000000,2136.0,12246.0,2114.0,2338.0,12364.0,2384.0
+55,Charge,2.4.2.4.,Autres charges - téléphone ascenseurs,955.0,1042.0,1113.0,1170.0,1131.0,1193.0
+56,Charge,2.4.3.,Contrat maintenance (Hors Syndic),0.0,0.0,269.0,9050.0,27149.0,9231.0
+57,Charge,2.4.4.,ASSURANCE : (Immeuble para hotelier multirisque),11648.0,12634.0,11536.0,11546.0,11890.0,11777.0
+58,Charge,2.6.,REMISE EN ETAT PARTIES PRIVATIVES,148835.0,74058.0,32530.0,21994.0,14480.0,35000.0
+59,Charge,2.6.1.,Réparations Parties Privatives,115972.0,77233.0,32628.0,25893.0,14480.0,35000.0
+60,Charge,2.6.2.,Electroménager (605),8517.0,4970.0,3417.0,5368.0,0.0,0.0
+61,Charge,2.6.3.,"Mobilier, équipement (renouvellement)",36938.0,13015.0,12694.0,2332.0,0.0,0.0
+62,Charge,2.6.4.,Récupération sur les locataires,-12591.0,-21160.0,-16209.0,-11598.0,0.0,0.0
+63,Charge,2.7.,REMISE EN ETAT PARTIES COMMUNES,5952.0,17505.0,24998.0,45476.0,0.0,5000.0
+64,Charge,2.7.1.,Réparation Partie Commune (Syndic + Résidence),5952.0,17505.0,24998.0,45476.0,0.0,5000.0
+65,Charge,2.7.1.3.,Réparation Partie Commune,5952.0,17504.0,24998.0,46228.0,0.0,5000.0
+66,Charge,2.7.1.3.2.,Réparation - chauffage,140.0,0.0,0.0,0.0,0.0,0.0
+67,Charge,2.7.1.3.3.,Réparation - ascenseurs,707.0,2863.0,1715.0,2732.0,0.0,0.0
+68,Charge,2.7.1.3.4.,Réparation - parking,0.0,86.0,425.0,5826.0,0.0,0.0
+69,Charge,2.7.1.3.6.,Réparation - sécurité,0.0,2058.0,6464.0,0.0,0.0,0.0
+70,Charge,2.7.1.3.8.,Réparation - Réparation diverse,0.0,8250.0,5365.0,691.0,0.0,0.0
+71,Charge,2.7.1.3.12.,Réparation - Toiture,600.0,934.0,0.0,750.0,0.0,0.0
+72,Charge,2.7.1.3.14.,Réparation - réparation PC syndic,0.0,0.0,0.0,21537.0,0.0,0.0
+73,Charge,2.7.1.4.,Prise en charge par fonds de prévoyance Copropriétaires,0.0,0.0,0.0,-752.0,0.0,0.0
+74,Charge,2.8.,LINGE ET BLANCHISSAGE,3734.0,4359.0,3350.0,2718.0,3602.0,2435.0
+75,Charge,2.8.1.,Location de linge + nettoyage de linge,3734.0,4359.0,3350.0,2718.0,3602.0,2435.0
+76,Charge,2.9.,FOURNITURES D'EXPLOITATION,19855.0,13309.0,3022.0,7052.0,2948.0,6291.0
+77,Charge,2.9.1.,Produits et matériel d'entretien,8229.0,9642.0,2962.0,3683.0,2948.0,2874.0
+78,Charge,2.9.3.,Vaisselle logement et cafétaria,4740.0,3634.0,0.0,0.0,0.0,0.0
+79,Charge,2.9.3.2.,Vaisselle,4740.0,3634.0,0.0,0.0,0.0,0.0
+80,Charge,2.9.5.,Achat petit équip. et fourn. / charges diverses d'exploit,6886.0,32.0,59.0,3369.0,0.0,3417.0
+81,Charge,2.9.5.4.,Achat - charges diverses d'exploitation,188.0,32.0,59.0,3369.0,0.0,3417.0
+82,Charge,2.9.5.7.,Divers matériel et mobilier,6698.0,0.0,0.0,0.0,0.0,0.0
+83,Charge,2.10.,ACHAT ALIMENTAIRE PDJ,0.0,0.0,0.0,0.0,0.0,0.0
+84,Charge,2.12.,"LOCATIONS, HONORAIRES, SACEM ET TV",6319.0,8613.0,4647.0,13217.0,11866.0,15113.0
+85,Charge,2.12.2.,Location immobilière (parking),0.0,0.0,0.0,0.0,0.0,2028.0
+86,Charge,2.12.2.1.,Location Immobilières,0.0,0.0,0.0,0.0,0.0,2028.0
+87,Charge,2.12.3.,Honoraire contentieux Gestion,6319.0,8580.0,4680.0,8964.0,11866.0,9113.0
+88,Charge,2.12.3.1.,Honoraire - juridiques et contentieux,3272.0,8455.0,4662.0,5675.0,0.0,5759.0
+89,Charge,2.12.3.2.,Honoraire - divers,3047.0,125.0,18.0,3288.0,11866.0,3354.0
+90,Charge,2.12.5.,Sacem,0.0,33.0,-33.0,0.0,0.0,2.0
+91,Charge,2.12.6.,Redevance audio-visuelle,0.0,0.0,0.0,0.0,0.0,0.0
+92,Charge,2.12.8.,Sous-traitance générale,0.0,0.0,0.0,4253.0,0.0,3969.0
+93,Charge,2.13.,DEPLACEMENT ET MISSION,905.0,2072.0,1120.0,1603.0,3124.0,1635.0
+94,Charge,2.14.,PUBLICITE,4762.0,2903.0,3011.0,2874.0,5327.0,8071.0
+95,Charge,2.14.1.,Publicité locale (résidence),0.0,102.0,75.0,344.0,0.0,0.0
+96,Charge,2.14.7.,Publicité Estudines,3947.0,1788.0,2036.0,2530.0,5327.0,8071.0
+97,Charge,2.14.10.,"Autres frais commerciaux  (ex : touraction, mno…)",815.0,1013.0,900.0,0.0,0.0,0.0
+98,Charge,2.15.,Publicité Internet,3122.0,2857.0,3063.0,4452.0,5781.0,4056.0
+99,Charge,2.16.,FOURNITURES ADMINISTRATIVES,976.0,1881.0,826.0,1283.0,900.0,1272.0
+100,Charge,2.16.1.,"Fournitures (bureau, contrat, reprographie…)",859.0,1721.0,521.0,745.0,0.0,725.0
+101,Charge,2.16.1.1.,Fournitures administratives,741.0,957.0,266.0,464.0,0.0,466.0
+102,Charge,2.16.1.3.,Reprographie,118.0,764.0,255.0,280.0,0.0,260.0
+103,Charge,2.16.2.,Frais postaux,13.0,27.0,170.0,150.0,0.0,150.0
+104,Charge,2.16.3.,Frais bancaires (compte séparé),104.0,133.0,135.0,389.0,900.0,396.0
+105,Charge,2.16.3.1.,Frais bancaires,0.0,0.0,0.0,300.0,900.0,306.0
+106,Charge,2.16.3.2.,Frais financiers,104.0,133.0,135.0,89.0,0.0,91.0
+107,Charge,2.17.,TELEPHONIE - INTERNET - INFORMATIQUE,25421.0,28433.0,25401.0,27650.0,27491.0,28267.0
+108,Charge,2.17.1.,Téléphone (C° et Abonnement),2586.0,4854.0,1622.0,1527.0,0.0,1628.0
+109,Charge,2.17.2.,Internet (location de ligne),22163.0,22907.0,23083.0,25413.0,27491.0,25922.0
+110,Charge,2.17.3.,Informatique,672.0,672.0,696.0,710.0,0.0,717.0
+111,Charge,2.17.3.2.,Informatique - Logiciels / licences,672.0,672.0,696.0,710.0,0.0,717.0
+112,Marge,3.,MARGE 1,1181378.0,1452222.0,1529494.0,1515435.0,1555249.0,1619405.0
+113,Chiffre d'affaire,4.,% DES RECETTES TOTALES,63.65,70.31,69.73,69.44,70.51,72.89
+114,Charge,5.,Total 1,1003325.0,1032612.0,1088310.0,1115597.0,1128644.0,1125933.0
+115,Charge,5.1.,AMORTISSEMENT et CREDIT BAIL,15318.0,25150.0,28095.0,23186.0,27076.0,34447.0
+116,Charge,5.1.1.,Loyer location financière et Crédit bail,399.0,0.0,0.0,0.0,0.0,0.0
+117,Charge,5.1.1.1.,Loyer - Véhicule,286.0,0.0,0.0,0.0,0.0,0.0
+118,Charge,5.1.1.4.,Loyer - Divers,113.0,0.0,0.0,0.0,0.0,0.0
+119,Charge,5.1.2.,Amortissement matériel,0.0,0.0,0.0,3.0,28.0,0.0
+120,Charge,5.1.2.1.,Amortissement - Téléphonie,0.0,0.0,0.0,3.0,28.0,0.0
+121,Charge,5.1.3.,Amortissement Mobilier Travaux,13218.0,19728.0,21036.0,17246.0,27048.0,25200.0
+122,Charge,5.1.3.1.,Mat. Para Hôtelier - Amortissement,328.0,328.0,606.0,218.0,0.0,0.0
+123,Charge,5.1.3.3.,Mobilier - Amortissement,12890.0,19401.0,20430.0,17028.0,27048.0,25200.0
+124,Charge,5.1.4.,Agencement - Amortissement 80200003,1570.0,5422.0,7059.0,5938.0,0.0,9246.0
+125,Charge,5.1.6.,Mobilier - CB et Loc Financière,131.0,0.0,0.0,0.0,0.0,0.0
+126,Charge,5.2.,LOYERS REVERSES PROPRIETAIRES,838387.0,857241.0,882289.0,905812.0,918344.0,916686.0
+127,Charge,5.2.1.,Loyers reversés aux propriétaires,838387.0,857241.0,882289.0,905812.0,918344.0,916686.0
+128,Charge,5.3.,GROS TRAVAUX,26540.0,0.0,0.0,3771.0,11312.0,0.0
+129,Charge,5.3.1.,Gros travaux Parties Privatives,0.0,0.0,0.0,3771.0,11312.0,0.0
+130,Charge,5.3.2.,Gros travaux Parties Communes,26540.0,0.0,0.0,0.0,0.0,0.0
+131,Charge,5.4.,INCIDENCE T.V.A,116325.0,134424.0,160708.0,169684.0,154251.0,163538.0
+132,Charge,5.4.1.,Incidence TVA (cc + prorata de gestion),97120.0,114835.0,140727.0,149104.0,133671.0,142546.0
+133,Charge,5.4.2.,Incidence TVA liée MDG et GARDIEN,19205.0,19589.0,19981.0,20580.0,20580.0,20992.0
+134,Charge,5.5.,CET (ex Taxe Pro),6754.0,15796.0,17219.0,13143.0,17662.0,11263.0
+135,Marge,6.,MARGE 2,178054.0,419611.0,441184.0,399838.0,426605.0,493472.0
+136,Chiffre d'affaire,7.,% DES RECETTES TOTALES,9.59,20.32,20.11,18.32,19.34,22.21
+137,Charge,8.,Total 2,138837.0,169394.0,216976.0,218108.0,204336.0,195815.0
+138,Charge,8.1.,PRESTATIONS INTERNES (Y/C Honoraires syndic),108997.0,133356.0,180184.0,181468.0,168703.0,168469.0
+139,Charge,8.2.,FRAIS DES SOCIETES,5248.0,10696.0,11449.0,11108.0,9531.0,2004.0
+140,Charge,8.2.1.,Frais des sociétés RSG,7140.0,8666.0,8877.0,9143.0,9143.0,0.0
+141,Charge,8.2.7.,Incidence congés payés,-1892.0,2030.0,2573.0,1965.0,388.0,2004.0
+142,Charge,8.3.,HONORAIRES SYNDIC,25342.0,25342.0,25342.0,25532.0,26102.0,25342.0
+143,Charge,8.4.,CHARGES EXCEPTIONNELLES,-750.0,0.0,0.0,0.0,0.0,0.0
+144,Charge,8.4.1.,Mobilier revendu aux propriétaires,-750.0,0.0,0.0,0.0,0.0,0.0
+145,Marge,9.,MARGE 3,39216.0,250217.0,224208.0,181730.0,222269.0,297657.0
+146,Chiffre d'affaire,10.,% DES RECETTES TOTALES,2.11,12.11,10.22,8.33,10.08,13.4
+147,Chiffre d'affaire,11.,Dotations aux amortissements (CAPEX),14788.0,25150.0,28095.0,23186.0,27076.0,34447.0
+148,Marge,12.,EBITDA,54004.0,275367.0,252303.0,204917.0,249344.0,332103.0
+149,Charge,13.,CAPEX,95452.0,34342.0,15964.0,19270.0,0.0,0.0
+150,Marge,14.,FREE CASH FLOW,-41447.0,241025.0,236339.0,185646.0,249344.0,332103.0

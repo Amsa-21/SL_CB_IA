@@ -106,8 +106,12 @@ async def get_rules(cat: str):
             logger.warning(f"Aucune catégorie trouvée pour le label : {cat}")
             return []
         lines = await execute_sp(
-            "ia.sp_categorieRegle_get",
-            {"user_fk": config.USER_FK, "categorie_fk": categorie_fk}
+            "dbo.sp_categorieRegle_get",
+            {
+                "user_fk": config.USER_FK, 
+                "categorie_fk": categorie_fk
+            },
+            config.DATABASE_URL_IA
         )
         return [line.get("regleL") for line in lines if line.get("regleL")]
     except Exception as e:
@@ -118,7 +122,13 @@ async def get_rules(cat: str):
 async def from_cat_to_fk(cat: str) -> int | None:
     """Retourne categorie_fk correspondant à un label de catégorie donné, ou None."""
     try:
-        categories = await execute_sp("ia.sp_categorie_get", {"user_fk": config.USER_FK})
+        categories = await execute_sp(
+            "dbo.sp_categorie_get", 
+            {
+                "user_fk": config.USER_FK
+            },
+            config.DATABASE_URL_IA
+        )
         cat_normalized = unicodedata.normalize('NFKD', cat).casefold()
         for category in categories:
             label = category.get("theLabel")
@@ -209,17 +219,31 @@ def preprocessing_data(df: pd.DataFrame, simple_dict: list[dict]) -> pd.DataFram
         if df_filtered.empty:
             df_filtered['Groupe'] = pd.Series(dtype='object')
             return df_filtered
-            
+
         mask_pct_recettes = df_filtered['Lignes'] == "% DES RECETTES TOTALES"
         df_pct_recettes = df_filtered[mask_pct_recettes].copy()
         df_autres = df_filtered[~mask_pct_recettes].copy()
+
         if not df_pct_recettes.empty:
-            df_pct_recettes = df_pct_recettes.sort_values("Montant", ascending=False).reset_index(drop=True)
-            code_map = {0: 4, 1: 7, 2: 10}
-            df_pct_recettes['Code Hiérarchique'] = df_pct_recettes.index.map(lambda idx: code_map.get(idx, 10))
+            sort_keys = ['Année', 'Mois', 'Contexte', "Nature de l'écriture", 'Montant']
+            existing_sort_keys = [col for col in sort_keys if col in df_pct_recettes.columns]
+            df_pct_recettes = (
+                df_pct_recettes
+                .sort_values(by=existing_sort_keys[:-1] + ['Montant'], ascending=[True]*len(existing_sort_keys[:-1])+[False])
+                .reset_index(drop=True)
+            )
+            code_map = {0: "4.", 1: "7.", 2: "10."}
+            df_pct_recettes['Code Hiérarchique'] = (
+                df_pct_recettes
+                .groupby(existing_sort_keys[:-1], sort=False)
+                .cumcount()
+                .map(lambda idx: code_map.get(idx, None))
+            )
+
         coded_tree = generate_hierarchy_codes(simple_dict)
         hierarchy_list = extract_flat_hierarchy_list(coded_tree)
         mapping_dict = {item['label']: item['code'] for item in hierarchy_list}
+
         if not df_autres.empty:
             df_autres['Code Hiérarchique'] = df_autres['Lignes'].map(mapping_dict)
         df_filtered = pd.concat([df_autres, df_pct_recettes]).sort_index(kind="stable")
@@ -229,6 +253,7 @@ def preprocessing_data(df: pd.DataFrame, simple_dict: list[dict]) -> pd.DataFram
             insert_idx = cols.index("Lignes")
             cols = cols[:insert_idx] + ["Code Hiérarchique"] + cols[insert_idx:]
             df_filtered = df_filtered[cols]
+
         result_list = extract_all_descendants_for_list(simple_dict)
         CHIFFRE_AFFAIRES = result_list[0] + result_list[3] + result_list[6] + result_list[9] + result_list[10]
         CHARGES = result_list[1] + result_list[4] + result_list[7] + result_list[12]
@@ -240,6 +265,20 @@ def preprocessing_data(df: pd.DataFrame, simple_dict: list[dict]) -> pd.DataFram
         }
         groupes_mapping = {poste: groupe for groupe, postes in groupes_dict.items() for poste in postes}
         df_filtered['Groupe'] = df_filtered['Lignes'].map(groupes_mapping)
+
+        mask_pct = df_filtered['Lignes'] == "% DES RECETTES TOTALES"
+        mask_non_pct = ~mask_pct
+
+        # Process non-pct as before
+        df_filtered.loc[mask_non_pct, "Montant"] = df_filtered.loc[mask_non_pct, "Montant"].round(0).astype(int)
+
+        # Ensure we handle dtype for mask_pct
+        if mask_pct.any():
+            montant_pct = df_filtered.loc[mask_pct, "Montant"].round(2).astype(str) + "%"
+            # Cast to object dtype before assignment to avoid FutureWarning
+            df_filtered["Montant"] = df_filtered["Montant"].astype("object")
+            df_filtered.loc[mask_pct, "Montant"] = montant_pct
+        
         df_filtered = df_filtered.drop_duplicates().reset_index(drop=True)
         return df_filtered
     except Exception as e:
@@ -331,6 +370,7 @@ async def parse_user_query(
         'lignes': [],
         'mois': []
     }
+    col_infos = await _get_col_info(query_lower)
 
     # GROUPE
     def _select_groupe(question: str, threshold: float = 70) -> list:
@@ -436,8 +476,6 @@ async def parse_user_query(
                 return [datetime.now().year - 1]
             elif re.search(r"(l'année|l'annee) prochaine|l'an prochain", question):
                 return [datetime.now().year + 1]
-            else:
-                return [datetime.now().year]
     params['annees'] = _define_year(query_lower)
 
     # MOIS
@@ -535,15 +573,13 @@ async def parse_user_query(
                 nature_ecritures.add('Mensuelle')
             if params.get('mois') and len(params['mois']) == 12:
                 nature_ecritures.add('Annuelle')
-        if not nature_ecritures:
-            nature_ecritures.add('Annuelle')
         return [v for v in ['Mensuelle', 'Annuelle'] if v in nature_ecritures]
     params['nature_ecriture'] = _select_nature_ecriture(query_lower)
 
     # LIGNES
-    result_list = extract_all_descendants_for_list(simple_dict)
-    LISTE_LIGNES: list[str] = [label for sublist in result_list for label in sublist]
     async def _match_lignes(question: str, threshold: int = 75, return_scores: bool = False):
+        result_list = extract_all_descendants_for_list(simple_dict)
+        LISTE_LIGNES: list[str] = [label for sublist in result_list for label in sublist]
         q = _strip_accents(question.lower())
         q_tokens = set(re.findall(r"\w+", q))
         results = {}
@@ -587,19 +623,47 @@ async def parse_user_query(
         return ordered if return_scores else [lbl for lbl, _ in ordered]
     params['lignes'] = await _match_lignes(query_lower)
 
-    col_infos = await _get_col_info(query_lower)
+    # Correct for NoneType issues and robustify list usage
     if col_infos:
-        params['annees'].append(col_infos["annee"])
-        if col_infos["mois"] == 0:
-            params['nature_ecriture'].append("Annuelle")
+        annee = col_infos.get("annee")
+        # Ensure params['annees'] is always a list
+        if not isinstance(params.get('annees'), list) or params['annees'] is None:
+            params['annees'] = []
+        if annee is not None and annee not in params['annees']:
+            params['annees'].append(annee)
+        mois = col_infos.get("mois", 0)
+        if not isinstance(params.get('nature_ecriture'), list) or params['nature_ecriture'] is None:
+            params['nature_ecriture'] = []
+        if mois == 0:
+            if "Annuelle" not in params['nature_ecriture']:
+                params['nature_ecriture'].append("Annuelle")
         else:
-            params['nature_ecriture'].append("Mensuelle")
-            params['mois'].append(col_infos["mois"])
-        params['types_valeur'].append(col_infos["contexte"])
+            if "Mensuelle" not in params['nature_ecriture']:
+                params['nature_ecriture'].append("Mensuelle")
+            if not isinstance(params.get('mois'), list) or params['mois'] is None:
+                params['mois'] = []
+            if mois not in params['mois']:
+                params['mois'].append(mois)
 
+        contexte = col_infos.get("contexte")
+        if not isinstance(params.get('types_valeur'), list) or params['types_valeur'] is None:
+            params['types_valeur'] = []
+        if contexte and contexte not in params['types_valeur']:
+            params['types_valeur'].append(contexte)
+
+    # Normalize all params lists (ensure always list, de-duplicate, and sort if non-empty)
     for k in ['groupes', 'types_valeur', 'annees', 'nature_ecriture', 'lignes', 'mois']:
-        if isinstance(params.get(k), list):
-            params[k] = list(set(params[k]))
+        param_val = params.get(k)
+        if not isinstance(param_val, list) or param_val is None:
+            params[k] = []
+        else:
+            params[k] = sorted(set(param_val)) if param_val else []
+
+    if not params['nature_ecriture']:
+        params['nature_ecriture'] = ['Annuelle']
+
+    if not params['annees']:
+        params['annees'] = [datetime.now().year]
 
     return params
 
@@ -792,10 +856,10 @@ async def get_data_for_llm(
         contexte: str,
         df_col: pd.DataFrame, 
         n_before: int = config.N_NEIGHBORS, 
-        n_after: int = config.N_NEIGHBORS) -> list:
+        n_after: int = config.N_NEIGHBORS) -> str:
 
         if df_col is None or df_col.empty:
-            return []
+            return ""
 
         mask = (df_col["theYear"] == annee) & (df_col["RB"].str.lower() == contexte.lower())
         if mois == 0:
@@ -804,7 +868,7 @@ async def get_data_for_llm(
             mask = mask & (df_col["Mois"] == mois)
         idx_list = df_col[mask].index.tolist()
         if not idx_list:
-            return []
+            return ""
         idx = idx_list[0]
 
         if mois == 0:
@@ -812,7 +876,7 @@ async def get_data_for_llm(
             try:
                 pos_in_mois0 = mois0_indices.index(idx)
             except ValueError:
-                return []
+                return ""
             start = max(0, pos_in_mois0 - n_before)
             end = pos_in_mois0 + n_after + 1
             indices = mois0_indices[start:end]
@@ -821,21 +885,21 @@ async def get_data_for_llm(
             try:
                 pos_in_year_contexte = year_contexte_indices.index(idx)
             except ValueError:
-                return []
+                return ""
             start = max(0, pos_in_year_contexte - n_before)
             end = pos_in_year_contexte + n_after + 1
             indices = year_contexte_indices[start:end]
 
         if not indices:
-            return []
+            return ""
 
         try:
             rows = df_col.loc[indices, ["theYear", "Mois", "RB"]]
         except KeyError:
-            return []
+            return ""
         cols_labels = ",".join([f"{int(row.theYear)},{int(row.Mois)},{row.RB}" for _, row in rows.iterrows()])
         return cols_labels
-    
+
     def _get_line_fk(label: str, res: list[dict]):
         df = pd.DataFrame(res).iloc[:, [0, 4]]
         ser: pd.DataFrame = df[df["label"] == label]["line_id"]
@@ -924,7 +988,7 @@ async def get_data_for_llm(
         lst = await execute_sp(
             "ia.sp_simBudValueDetails",
             {
-                "user_fk": 8,
+                "user_fk": config.USER_FK,
                 "listSA": 0,
                 "line_fk": line_fks_str,
                 "sa_fk": sa_fk,
@@ -966,7 +1030,6 @@ async def get_data_for_llm(
     if df_final.empty:
         return False, None
     else:
-        df_final["Montant"] = df_final["Montant"].round(0).astype(int)
         return True, df_final.to_markdown(index=False)
 
 @log_function_call
@@ -976,18 +1039,18 @@ def count_tokens(text: str) -> int:
     return len(tokens)
 
 @log_function_call
-async def execute_sp(sp_name: str, params: dict) -> List[Dict[str, Any]]:
+async def execute_sp(sp_name: str, params: dict, database_url: str = config.DATABASE_URL) -> List[Dict[str, Any]]:
     """
     Exécute une procédure stockée SQL et retourne la liste de dicts résultat (ou vide).
     Gère aussi bien les SP de type select que add (insert/update).
     """
     results = []
     try:
-        async with get_session() as session:
+        async with get_session(database_url) as session:
             param_keys = ", ".join([f":{key}" for key in params.keys()])
             sql_query = text(f"EXEC {sp_name} {param_keys}" if param_keys else f"EXEC {sp_name}")
             result_proxy = await session.execute(sql_query, params)
-            if sp_name.startswith("ia.sp_") and sp_name.endswith("_add"):
+            if (sp_name.startswith("ia.sp_") and sp_name.endswith("_add")) or (sp_name.startswith("dbo.sp_") and sp_name.endswith("_add")):
                 await session.commit()
             try:
                 for row in result_proxy:
@@ -1006,8 +1069,20 @@ async def execute_sp(sp_name: str, params: dict) -> List[Dict[str, Any]]:
 async def get_mapping() -> dict:
     """Récupère le mapping des catégories et synonymes depuis la base."""
     try:
-        categories = await execute_sp("ia.sp_categorie_get", {"user_fk": config.USER_FK})
-        keywords = await execute_sp("ia.sp_motCle_get", {"user_fk": config.USER_FK})
+        categories = await execute_sp(
+            "dbo.sp_categorie_get", 
+            {
+                "user_fk": config.USER_FK
+            },
+            config.DATABASE_URL_IA
+        )
+        keywords = await execute_sp(
+            "dbo.sp_motCle_get", 
+            {
+                "user_fk": config.USER_FK
+            },
+            config.DATABASE_URL_IA
+        )
         synonymes_groupes = {}
         keywords_by_cat = {}
         for keyword in keywords:

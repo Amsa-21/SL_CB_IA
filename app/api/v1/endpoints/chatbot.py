@@ -23,7 +23,8 @@ from app.schemas.schemas import (
     InitSessionResponse,
     WordCloudResponse,
 )
-from app.services.functions import (
+from app.services.ollama_service import ask_ollama, datetime, format_response
+from app.utils.functions import (
     count_tokens,
     create_simplified_hierarchy,
     detect_keywords,
@@ -33,7 +34,6 @@ from app.services.functions import (
     get_mapping,
     preprocessing_data,
 )
-from app.services.ollama_service import ask_ollama, datetime, format_response
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
@@ -86,7 +86,7 @@ async def init_session(request: InitSessionRequest):
         resids = await execute_sp(
             "dbo.sp_saResidences",
             {
-                "user_fk": 14,
+                "user_fk": config.USER_FK,
             }
         )
         df_residences = pd.DataFrame(resids)
@@ -134,6 +134,7 @@ async def init_session(request: InitSessionRequest):
             logger.error(f"Erreur lors de l'enregistrement de la session dans Redis : {e}")
             raise HTTPException(status_code=500, detail="Erreur lors de l'initialisation de la session (Redis).")
         logger.info(f"Nouvelle session initialisée : {session_id} ¤ {str(context_data.iloc[1, 0]).split(' - ')[1]} - {context_data.iloc[1, 2]}")
+
         return {"session_id": session_id}
     except Exception as e:
         logger.error(f"Erreur inattendue lors de l'initialisation de la session : {e}")
@@ -213,13 +214,14 @@ async def chat(request: ChatRequest):
         for kw in keywords:
             try:
                 result = await execute_sp(
-                    "ia.sp_motCle_add",
+                    "dbo.sp_motCle_add",
                     {
                         "user_fk": config.USER_FK,
                         "categorie_fk": None,
                         "theLabel": kw.capitalize(),
                         "descr": ""
-                    }
+                    },
+                    config.DATABASE_URL_IA
                 )
                 motCle_fk = 0
                 if result[0].get("message"):

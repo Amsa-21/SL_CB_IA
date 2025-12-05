@@ -1,0 +1,73 @@
+log_function_call :
+    Décorateur qui journalise l’entrée et les erreurs d’une fonction, en gérant automatiquement la version synchrone ou asynchrone.
+
+add_br_outside_blocks :
+    Ajoute des balises <br/> autour des lignes de texte qui ne se trouvent pas dans des blocs HTML (table, ul, etc.) afin d’améliorer le rendu.
+
+convert_markdown_to_html :
+    Normalise un texte Markdown (tables, code, listes) puis le convertit en HTML5 via la bibliothèque markdown.
+
+format_time :
+    Transforme un timedelta en courte chaîne HTML (Xm Ys) destinée à l’interface chatbot.
+
+get_rules :
+    Récupère en base les règles associées à une catégorie métier identifiée par son label.
+
+from_cat_to_fk :
+    Normalise un label de catégorie et retourne l’identifiant (categorie_fk) correspondant depuis la base.
+
+generate_hierarchy_codes :
+    Parcourt un arbre hiérarchique et assigne à chaque nœud un code numérique hiérarchique (1., 1.1., …).
+
+extract_flat_hierarchy_list :
+    Aplati un arbre hiérarchique en liste de dictionnaires contenant `label` et `code`.
+
+get_descendant_labels :
+    Parcourt récursivement un nœud et renvoie tous les labels de ses descendants.
+
+extract_all_descendants_for_list :
+    Pour chaque racine d’un arbre, renvoie la liste de tous ses descendants (utile pour définir les groupes métiers).
+
+preprocessing_data :
+    Filtre et restructure les données budgétaires : applique la hiérarchie, ajoute les codes, calcule les groupes (Chiffre d’affaires, Charges, Marges) et nettoie les doublons.
+
+parse_user_query :
+    Transforme une question utilisateur en paramètres analytiques (groupes, type de valeur, années, mois, nature d’écriture, lignes) via NLP, fuzzy matching et métadonnées SQL.
+
+get_data_for_llm :
+    Filtre les écritures selon les paramètres (type, année, mois, groupe, lignes), prépare un tableau agrégé trié et renvoie un Markdown exploitable par le LLM.
+
+count_tokens :
+    Compte grossièrement les tokens d’un texte en séparant mots et ponctuation.
+
+execute_sp :
+    Exécute une procédure stockée SQL de manière asynchrone avec SQLAlchemy, en gérant commit, erreurs et conversion en liste de dicts.
+
+get_mapping :
+    Construit le mapping catégories → synonymes en combinant tables `categorie` et `motCle`.
+
+detect_keywords :
+    Extrait les mots significatifs d’une question (sans accents, sans stopwords, sans chiffres) pour les enregistrer en base.
+
+create_simplified_hierarchy :
+    Reconstruit une hiérarchie imbriquée (label/children) à partir d’une liste plate (line_id, parent_fk).
+
+get_children_by_label :
+    Recherche un label dans une hiérarchie et renvoie la liste de ses enfants immédiats.
+
+find_res :
+    Identifie la ou les résidences mentionnées dans une question via fuzzy matching et renvoie leurs identifiants analytiques.
+
+get_ext_data_for_llm :
+    Prépare les données comparatives de résidences externes : récupère les écritures, applique le prétraitement et génère les prompts Markdown pour le LLM.
+
+get_col_info :
+    Formate sous forme de tableau Markdown les sources disponibles pour une ligne donnée en parcourant des colonnes voisines.
+
+get_line_info :
+    Produit un tableau Markdown listant les lignes voisines d’une ligne vide, ainsi que leurs sources, pour expliquer l’absence de données.
+
+
+
+
+

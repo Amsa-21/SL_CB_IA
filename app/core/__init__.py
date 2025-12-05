@@ -1,15 +1,43 @@
 import asyncio
 from functools import lru_cache
 import logging
+from typing import Any
 
 import nest_asyncio
 import pandas as pd
+from sqlalchemy import text
+from sqlalchemy.exc import ProgrammingError
 
-from app.services.functions import execute_sp
+from app.db.session import get_session
 
 logger = logging.getLogger(__name__)
 nest_asyncio.apply()
 
+async def execute_sp(sp_name: str, params: dict) -> list[dict[str, Any]]:
+    """
+    Exécute une procédure stockée SQL et retourne la liste de dicts résultat (ou vide).
+    Gère aussi bien les SP de type select que add (insert/update).
+    """
+    results = []
+    try:
+        async with get_session() as session:
+            param_keys = ", ".join([f":{key}" for key in params.keys()])
+            sql_query = text(f"EXEC {sp_name} {param_keys}" if param_keys else f"EXEC {sp_name}")
+            result_proxy = await session.execute(sql_query, params)
+            if sp_name.startswith("ia.sp_") and sp_name.endswith("_add"):
+                await session.commit()
+            try:
+                for row in result_proxy:
+                    results.append(dict(row._mapping))
+            except Exception:
+                pass
+            return results
+    except ProgrammingError as e:
+        logger.error(f"SQLAlchemy ProgrammingError: {e}")
+        raise
+    except Exception as e:
+        logger.error(f"Database connection or execution failed: {e}")
+        raise
 
 def _ensure_event_loop():
     try:
