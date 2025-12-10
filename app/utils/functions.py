@@ -53,7 +53,7 @@ def add_br_outside_blocks(text: str) -> str:
             new_lines.append(line)
             continue
         if not inside_block and line.strip() != "":
-            new_lines.append(line + "<br/>")
+            new_lines.append(line)
         else:
             new_lines.append(line)
     joined = "\n".join(new_lines)

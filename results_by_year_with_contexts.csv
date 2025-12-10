@@ -1,0 +1,756 @@
+annee,code,ligne,valeur_reel,valeur_previsionnel,valeur_budget
+2022,1.,RECETTES,1856015 €,N/A,N/A
+2022,1.1.,Loyers logements et parkings HT,1715744 €,N/A,N/A
+2022,1.1.1.,CA Locatif Estudines,1709962 €,N/A,N/A
+2022,1.1.4.,CA Locatif Parkings,5782 €,N/A,N/A
+2022,1.2.,RECETTES ANNEXES,129946 €,N/A,N/A
+2022,1.2.2.,CA Frais locatif,24051 €,N/A,N/A
+2022,1.2.5.,CA Laverie-Ménage,13666 €,N/A,N/A
+2022,1.2.5.2.,Laverie,13491 €,N/A,N/A
+2022,1.2.5.4.,Ménage supplémentaire,175 €,N/A,N/A
+2022,1.2.8.,CA Divers,233 €,N/A,N/A
+2022,1.2.9.,Subvention d'exploitation (Rbst format°),-1 €,N/A,N/A
+2022,1.2.12.,Charges de copro récupérables,91998 €,N/A,N/A
+2022,1.3.,Commission Agence TO,-2253 €,N/A,N/A
+2022,1.4.,IMPAYES,12578 €,N/A,N/A
+2022,1.4.1.,Impayés locataires,11841 €,N/A,N/A
+2022,1.4.2.,Impayés Apparthotels,737 €,N/A,N/A
+2022,2.,CHARGES D'IMMEUBLE DIRECTES,674637 €,N/A,N/A
+2022,2.1.,FRAIS DE PERSONNEL,161106 €,N/A,N/A
+2022,2.1.1.,Salaires,46528 €,N/A,N/A
+2022,2.1.2.,Charges sur salaires,13824 €,N/A,N/A
+2022,2.1.3.,Prime,5190 €,N/A,N/A
+2022,2.1.6.,Personnel intérimaire,61640 €,N/A,N/A
+2022,2.1.8.,Frais Yser - Encadrement et commercial,28231 €,N/A,N/A
+2022,2.1.9.1.,Autres frais de personnel,382 €,N/A,N/A
+2022,2.1.9.2.,Autres frais de personnel - formation,0 €,N/A,N/A
+2022,2.1.10.,Prestataires sécurité gardiennage,-78 €,N/A,N/A
+2022,2.1.10.1.,Prestataire sécurité gardiennage,-78 €,N/A,N/A
+2022,2.1.11.,Nettoyage Parties Communes,225 €,N/A,N/A
+2022,2.1.12.,Nettoyage Parties Privatives,5354 €,N/A,N/A
+2022,2.1.14.,Animation,0 €,N/A,N/A
+2022,2.2.,IMPOTS et TAXES DIVERSES,27062 €,N/A,N/A
+2022,2.2.2.,Taxe d'ordures ménagères,4146 €,N/A,N/A
+2022,2.2.3.,Taxe foncière / Taxe d'habitation,22916 €,N/A,N/A
+2022,2.2.3.1.,Taxe foncière / taxe d'habitation,21646 €,N/A,N/A
+2022,2.2.3.2.,Taxe foncière Syndic,1270 €,N/A,N/A
+2022,2.2.4.1.,Autres impôts et taxes,0 €,N/A,N/A
+2022,2.3.,ENERGIE,223806 €,N/A,N/A
+2022,2.3.1.,EAU : (RSG-REA-YSER-LFP),151793 €,N/A,N/A
+2022,2.3.2.,EDF : (RSG-REA-LFP),21558 €,N/A,N/A
+2022,2.3.2.1.,EDF - Parties communes : Réel (50200000),15216 €,N/A,N/A
+2022,2.3.2.2.,EDF - Parties Privatives,3807 €,N/A,N/A
+2022,2.3.2.3.,EDF - Ascenseurs,2535 €,N/A,N/A
+2022,2.3.3.,Chauffage - Gaz,50456 €,N/A,N/A
+2022,2.4.,CONTRATS DE MAINTENANCE,42782 €,N/A,N/A
+2022,2.4.1.,Contrat de maintenance LFP,28043 €,N/A,N/A
+2022,2.4.1.2.,Maintenance - chauffage,6650 €,N/A,N/A
+2022,2.4.1.3.,Maintenance - ascenseurs,2888 €,N/A,N/A
+2022,2.4.1.5.,Maintenance - parkings,1351 €,N/A,N/A
+2022,2.4.1.6.,Maintenance - espaces verts,3956 €,N/A,N/A
+2022,2.4.1.7.,Maintenance - sécurité,5932 €,N/A,N/A
+2022,2.4.1.8.,Maintenance - VMC,1207 €,N/A,N/A
+2022,2.4.1.9.,Maintenance - contrats divers,4559 €,N/A,N/A
+2022,2.4.1.13.,Maintenance - toiture,1500 €,N/A,N/A
+2022,2.4.2.,Autres charges de copropriété,3091 €,N/A,N/A
+2022,2.4.2.1.,Autres charges - 51000000,2136 €,N/A,N/A
+2022,2.4.2.4.,Autres charges - téléphone ascenseurs,955 €,N/A,N/A
+2022,2.4.3.,Contrat maintenance (Hors Syndic),0 €,N/A,N/A
+2022,2.4.4.,ASSURANCE : (Immeuble para hotelier multirisque),11648 €,N/A,N/A
+2022,2.6.,REMISE EN ETAT PARTIES PRIVATIVES,148835 €,N/A,N/A
+2022,2.6.1.,Réparations Parties Privatives,115972 €,N/A,N/A
+2022,2.6.2.,Electroménager (605),8517 €,N/A,N/A
+2022,2.6.3.,"Mobilier, équipement (renouvellement)",36938 €,N/A,N/A
+2022,2.6.4.,Récupération sur les locataires,-12591 €,N/A,N/A
+2022,2.7.,REMISE EN ETAT PARTIES COMMUNES,5952 €,N/A,N/A
+2022,2.7.1.,Réparation Partie Commune (Syndic + Résidence),5952 €,N/A,N/A
+2022,2.7.1.3.,Réparation Partie Commune,5952 €,N/A,N/A
+2022,2.7.1.3.2.,Réparation - chauffage,140 €,N/A,N/A
+2022,2.7.1.3.3.,Réparation - ascenseurs,707 €,N/A,N/A
+2022,2.7.1.3.4.,Réparation - parking,0 €,N/A,N/A
+2022,2.7.1.3.6.,Réparation - sécurité,0 €,N/A,N/A
+2022,2.7.1.3.8.,Réparation - Réparation diverse,0 €,N/A,N/A
+2022,2.7.1.3.12.,Réparation - Toiture,600 €,N/A,N/A
+2022,2.7.1.3.14.,Réparation - réparation PC syndic,0 €,N/A,N/A
+2022,2.7.1.4.,Prise en charge par fonds de prévoyance Copropriétaires,0 €,N/A,N/A
+2022,2.8.,LINGE ET BLANCHISSAGE,3734 €,N/A,N/A
+2022,2.8.1.,Location de linge + nettoyage de linge,3734 €,N/A,N/A
+2022,2.9.,FOURNITURES D'EXPLOITATION,19855 €,N/A,N/A
+2022,2.9.1.,Produits et matériel d'entretien,8229 €,N/A,N/A
+2022,2.9.3.,Vaisselle logement et cafétaria,4740 €,N/A,N/A
+2022,2.9.3.2.,Vaisselle,4740 €,N/A,N/A
+2022,2.9.5.,Achat petit équip. et fourn. / charges diverses d'exploit,6886 €,N/A,N/A
+2022,2.9.5.4.,Achat - charges diverses d'exploitation,188 €,N/A,N/A
+2022,2.9.5.7.,Divers matériel et mobilier,6698 €,N/A,N/A
+2022,2.10.,ACHAT ALIMENTAIRE PDJ,0 €,N/A,N/A
+2022,2.12.,"LOCATIONS, HONORAIRES, SACEM ET TV",6319 €,N/A,N/A
+2022,2.12.2.,Location immobilière (parking),0 €,N/A,N/A
+2022,2.12.2.1.,Location Immobilières,0 €,N/A,N/A
+2022,2.12.3.,Honoraire contentieux Gestion,6319 €,N/A,N/A
+2022,2.12.3.1.,Honoraire - juridiques et contentieux,3272 €,N/A,N/A
+2022,2.12.3.2.,Honoraire - divers,3047 €,N/A,N/A
+2022,2.12.5.,Sacem,0 €,N/A,N/A
+2022,2.12.6.,Redevance audio-visuelle,0 €,N/A,N/A
+2022,2.12.8.,Sous-traitance générale,0 €,N/A,N/A
+2022,2.13.,DEPLACEMENT ET MISSION,905 €,N/A,N/A
+2022,2.14.,PUBLICITE,4762 €,N/A,N/A
+2022,2.14.1.,Publicité locale (résidence),0 €,N/A,N/A
+2022,2.14.7.,Publicité Estudines,3947 €,N/A,N/A
+2022,2.14.10.,"Autres frais commerciaux  (ex : touraction, mno…)",815 €,N/A,N/A
+2022,2.15.,Publicité Internet,3122 €,N/A,N/A
+2022,2.16.,FOURNITURES ADMINISTRATIVES,976 €,N/A,N/A
+2022,2.16.1.,"Fournitures (bureau, contrat, reprographie…)",859 €,N/A,N/A
+2022,2.16.1.1.,Fournitures administratives,741 €,N/A,N/A
+2022,2.16.1.3.,Reprographie,118 €,N/A,N/A
+2022,2.16.2.,Frais postaux,13 €,N/A,N/A
+2022,2.16.3.,Frais bancaires (compte séparé),104 €,N/A,N/A
+2022,2.16.3.1.,Frais bancaires,0 €,N/A,N/A
+2022,2.16.3.2.,Frais financiers,104 €,N/A,N/A
+2022,2.17.,TELEPHONIE - INTERNET - INFORMATIQUE,25421 €,N/A,N/A
+2022,2.17.1.,Téléphone (C° et Abonnement),2586 €,N/A,N/A
+2022,2.17.2.,Internet (location de ligne),22163 €,N/A,N/A
+2022,2.17.3.,Informatique,672 €,N/A,N/A
+2022,2.17.3.2.,Informatique - Logiciels / licences,672 €,N/A,N/A
+2022,3.,MARGE 1,1181378 €,N/A,N/A
+2022,4.,% DES RECETTES TOTALES,63.65 %,N/A,N/A
+2022,5.,Total 1,1003325 €,N/A,N/A
+2022,5.1.,AMORTISSEMENT et CREDIT BAIL,15318 €,N/A,N/A
+2022,5.1.1.,Loyer location financière et Crédit bail,399 €,N/A,N/A
+2022,5.1.1.1.,Loyer - Véhicule,286 €,N/A,N/A
+2022,5.1.1.4.,Loyer - Divers,113 €,N/A,N/A
+2022,5.1.2.,Amortissement matériel,0 €,N/A,N/A
+2022,5.1.2.1.,Amortissement - Téléphonie,0 €,N/A,N/A
+2022,5.1.3.,Amortissement Mobilier Travaux,13218 €,N/A,N/A
+2022,5.1.3.1.,Mat. Para Hôtelier - Amortissement,328 €,N/A,N/A
+2022,5.1.3.3.,Mobilier - Amortissement,12890 €,N/A,N/A
+2022,5.1.4.,Agencement - Amortissement 80200003,1570 €,N/A,N/A
+2022,5.1.6.,Mobilier - CB et Loc Financière,131 €,N/A,N/A
+2022,5.2.,LOYERS REVERSES PROPRIETAIRES,838387 €,N/A,N/A
+2022,5.2.1.,Loyers reversés aux propriétaires,838387 €,N/A,N/A
+2022,5.3.,GROS TRAVAUX,26540 €,N/A,N/A
+2022,5.3.1.,Gros travaux Parties Privatives,0 €,N/A,N/A
+2022,5.3.2.,Gros travaux Parties Communes,26540 €,N/A,N/A
+2022,5.4.,INCIDENCE T.V.A,116325 €,N/A,N/A
+2022,5.4.1.,Incidence TVA (cc + prorata de gestion),97120 €,N/A,N/A
+2022,5.4.2.,Incidence TVA liée MDG et GARDIEN,19205 €,N/A,N/A
+2022,5.5.,CET (ex Taxe Pro),6754 €,N/A,N/A
+2022,6.,MARGE 2,178054 €,N/A,N/A
+2022,7.,% DES RECETTES TOTALES,9.59 %,N/A,N/A
+2022,8.,Total 2,138837 €,N/A,N/A
+2022,8.1.,PRESTATIONS INTERNES (Y/C Honoraires syndic),108997 €,N/A,N/A
+2022,8.2.,FRAIS DES SOCIETES,5248 €,N/A,N/A
+2022,8.2.1.,Frais des sociétés RSG,7140 €,N/A,N/A
+2022,8.2.7.,Incidence congés payés,-1892 €,N/A,N/A
+2022,8.3.,HONORAIRES SYNDIC,25342 €,N/A,N/A
+2022,8.4.,CHARGES EXCEPTIONNELLES,-750 €,N/A,N/A
+2022,8.4.1.,Mobilier revendu aux propriétaires,-750 €,N/A,N/A
+2022,9.,MARGE 3,39216 €,N/A,N/A
+2022,10.,% DES RECETTES TOTALES,2.11 %,N/A,N/A
+2022,11.,Dotations aux amortissements (CAPEX),14788 €,N/A,N/A
+2022,12.,EBITDA,54004 €,N/A,N/A
+2022,13.,CAPEX,95452 €,N/A,N/A
+2022,14.,FREE CASH FLOW,-41447 €,N/A,N/A
+2023,1.,RECETTES,2065453 €,N/A,N/A
+2023,1.1.,Loyers logements et parkings HT,1908910 €,N/A,N/A
+2023,1.1.1.,CA Locatif Estudines,1903970 €,N/A,N/A
+2023,1.1.4.,CA Locatif Parkings,4940 €,N/A,N/A
+2023,1.2.,RECETTES ANNEXES,182250 €,N/A,N/A
+2023,1.2.2.,CA Frais locatif,31173 €,N/A,N/A
+2023,1.2.5.,CA Laverie-Ménage,16424 €,N/A,N/A
+2023,1.2.5.2.,Laverie,16319 €,N/A,N/A
+2023,1.2.5.4.,Ménage supplémentaire,105 €,N/A,N/A
+2023,1.2.8.,CA Divers,6383 €,N/A,N/A
+2023,1.2.9.,Subvention d'exploitation (Rbst format°),0 €,N/A,N/A
+2023,1.2.12.,Charges de copro récupérables,128270 €,N/A,N/A
+2023,1.3.,Commission Agence TO,-1914 €,N/A,N/A
+2023,1.4.,IMPAYES,-23793 €,N/A,N/A
+2023,1.4.1.,Impayés locataires,-17737 €,N/A,N/A
+2023,1.4.2.,Impayés Apparthotels,-6056 €,N/A,N/A
+2023,2.,CHARGES D'IMMEUBLE DIRECTES,613230 €,N/A,N/A
+2023,2.1.,FRAIS DE PERSONNEL,163977 €,N/A,N/A
+2023,2.1.1.,Salaires,37555 €,N/A,N/A
+2023,2.1.2.,Charges sur salaires,13047 €,N/A,N/A
+2023,2.1.3.,Prime,6416 €,N/A,N/A
+2023,2.1.6.,Personnel intérimaire,66642 €,N/A,N/A
+2023,2.1.8.,Frais Yser - Encadrement et commercial,28444 €,N/A,N/A
+2023,2.1.9.1.,Autres frais de personnel,620 €,N/A,N/A
+2023,2.1.9.2.,Autres frais de personnel - formation,25 €,N/A,N/A
+2023,2.1.10.,Prestataires sécurité gardiennage,2010 €,N/A,N/A
+2023,2.1.10.1.,Prestataire sécurité gardiennage,2010 €,N/A,N/A
+2023,2.1.11.,Nettoyage Parties Communes,2795 €,N/A,N/A
+2023,2.1.12.,Nettoyage Parties Privatives,6746 €,N/A,N/A
+2023,2.1.14.,Animation,0 €,N/A,N/A
+2023,2.2.,IMPOTS et TAXES DIVERSES,3995 €,N/A,N/A
+2023,2.2.2.,Taxe d'ordures ménagères,2630 €,N/A,N/A
+2023,2.2.3.,Taxe foncière / Taxe d'habitation,1365 €,N/A,N/A
+2023,2.2.3.1.,Taxe foncière / taxe d'habitation,0 €,N/A,N/A
+2023,2.2.3.2.,Taxe foncière Syndic,1365 €,N/A,N/A
+2023,2.2.4.1.,Autres impôts et taxes,0 €,N/A,N/A
+2023,2.3.,ENERGIE,236163 €,N/A,N/A
+2023,2.3.1.,EAU : (RSG-REA-YSER-LFP),141184 €,N/A,N/A
+2023,2.3.2.,EDF : (RSG-REA-LFP),44169 €,N/A,N/A
+2023,2.3.2.1.,EDF - Parties communes : Réel (50200000),32404 €,N/A,N/A
+2023,2.3.2.2.,EDF - Parties Privatives,7523 €,N/A,N/A
+2023,2.3.2.3.,EDF - Ascenseurs,4242 €,N/A,N/A
+2023,2.3.3.,Chauffage - Gaz,50810 €,N/A,N/A
+2023,2.4.,CONTRATS DE MAINTENANCE,53107 €,N/A,N/A
+2023,2.4.1.,Contrat de maintenance LFP,27185 €,N/A,N/A
+2023,2.4.1.2.,Maintenance - chauffage,0 €,N/A,N/A
+2023,2.4.1.3.,Maintenance - ascenseurs,4573 €,N/A,N/A
+2023,2.4.1.5.,Maintenance - parkings,1723 €,N/A,N/A
+2023,2.4.1.6.,Maintenance - espaces verts,4152 €,N/A,N/A
+2023,2.4.1.7.,Maintenance - sécurité,4030 €,N/A,N/A
+2023,2.4.1.8.,Maintenance - VMC,-127 €,N/A,N/A
+2023,2.4.1.9.,Maintenance - contrats divers,11334 €,N/A,N/A
+2023,2.4.1.13.,Maintenance - toiture,1500 €,N/A,N/A
+2023,2.4.2.,Autres charges de copropriété,13288 €,N/A,N/A
+2023,2.4.2.1.,Autres charges - 51000000,12246 €,N/A,N/A
+2023,2.4.2.4.,Autres charges - téléphone ascenseurs,1042 €,N/A,N/A
+2023,2.4.3.,Contrat maintenance (Hors Syndic),0 €,N/A,N/A
+2023,2.4.4.,ASSURANCE : (Immeuble para hotelier multirisque),12634 €,N/A,N/A
+2023,2.6.,REMISE EN ETAT PARTIES PRIVATIVES,74058 €,N/A,N/A
+2023,2.6.1.,Réparations Parties Privatives,77233 €,N/A,N/A
+2023,2.6.2.,Electroménager (605),4970 €,N/A,N/A
+2023,2.6.3.,"Mobilier, équipement (renouvellement)",13015 €,N/A,N/A
+2023,2.6.4.,Récupération sur les locataires,-21160 €,N/A,N/A
+2023,2.7.,REMISE EN ETAT PARTIES COMMUNES,17505 €,N/A,N/A
+2023,2.7.1.,Réparation Partie Commune (Syndic + Résidence),17505 €,N/A,N/A
+2023,2.7.1.3.,Réparation Partie Commune,17504 €,N/A,N/A
+2023,2.7.1.3.2.,Réparation - chauffage,0 €,N/A,N/A
+2023,2.7.1.3.3.,Réparation - ascenseurs,2863 €,N/A,N/A
+2023,2.7.1.3.4.,Réparation - parking,86 €,N/A,N/A
+2023,2.7.1.3.6.,Réparation - sécurité,2058 €,N/A,N/A
+2023,2.7.1.3.8.,Réparation - Réparation diverse,8250 €,N/A,N/A
+2023,2.7.1.3.12.,Réparation - Toiture,934 €,N/A,N/A
+2023,2.7.1.3.14.,Réparation - réparation PC syndic,0 €,N/A,N/A
+2023,2.7.1.4.,Prise en charge par fonds de prévoyance Copropriétaires,0 €,N/A,N/A
+2023,2.8.,LINGE ET BLANCHISSAGE,4359 €,N/A,N/A
+2023,2.8.1.,Location de linge + nettoyage de linge,4359 €,N/A,N/A
+2023,2.9.,FOURNITURES D'EXPLOITATION,13309 €,N/A,N/A
+2023,2.9.1.,Produits et matériel d'entretien,9642 €,N/A,N/A
+2023,2.9.3.,Vaisselle logement et cafétaria,3634 €,N/A,N/A
+2023,2.9.3.2.,Vaisselle,3634 €,N/A,N/A
+2023,2.9.5.,Achat petit équip. et fourn. / charges diverses d'exploit,32 €,N/A,N/A
+2023,2.9.5.4.,Achat - charges diverses d'exploitation,32 €,N/A,N/A
+2023,2.9.5.7.,Divers matériel et mobilier,0 €,N/A,N/A
+2023,2.10.,ACHAT ALIMENTAIRE PDJ,0 €,N/A,N/A
+2023,2.12.,"LOCATIONS, HONORAIRES, SACEM ET TV",8613 €,N/A,N/A
+2023,2.12.2.,Location immobilière (parking),0 €,N/A,N/A
+2023,2.12.2.1.,Location Immobilières,0 €,N/A,N/A
+2023,2.12.3.,Honoraire contentieux Gestion,8580 €,N/A,N/A
+2023,2.12.3.1.,Honoraire - juridiques et contentieux,8455 €,N/A,N/A
+2023,2.12.3.2.,Honoraire - divers,125 €,N/A,N/A
+2023,2.12.5.,Sacem,33 €,N/A,N/A
+2023,2.12.6.,Redevance audio-visuelle,0 €,N/A,N/A
+2023,2.12.8.,Sous-traitance générale,0 €,N/A,N/A
+2023,2.13.,DEPLACEMENT ET MISSION,2072 €,N/A,N/A
+2023,2.14.,PUBLICITE,2903 €,N/A,N/A
+2023,2.14.1.,Publicité locale (résidence),102 €,N/A,N/A
+2023,2.14.7.,Publicité Estudines,1788 €,N/A,N/A
+2023,2.14.10.,"Autres frais commerciaux  (ex : touraction, mno…)",1013 €,N/A,N/A
+2023,2.15.,Publicité Internet,2857 €,N/A,N/A
+2023,2.16.,FOURNITURES ADMINISTRATIVES,1881 €,N/A,N/A
+2023,2.16.1.,"Fournitures (bureau, contrat, reprographie…)",1721 €,N/A,N/A
+2023,2.16.1.1.,Fournitures administratives,957 €,N/A,N/A
+2023,2.16.1.3.,Reprographie,764 €,N/A,N/A
+2023,2.16.2.,Frais postaux,27 €,N/A,N/A
+2023,2.16.3.,Frais bancaires (compte séparé),133 €,N/A,N/A
+2023,2.16.3.1.,Frais bancaires,0 €,N/A,N/A
+2023,2.16.3.2.,Frais financiers,133 €,N/A,N/A
+2023,2.17.,TELEPHONIE - INTERNET - INFORMATIQUE,28433 €,N/A,N/A
+2023,2.17.1.,Téléphone (C° et Abonnement),4854 €,N/A,N/A
+2023,2.17.2.,Internet (location de ligne),22907 €,N/A,N/A
+2023,2.17.3.,Informatique,672 €,N/A,N/A
+2023,2.17.3.2.,Informatique - Logiciels / licences,672 €,N/A,N/A
+2023,3.,MARGE 1,1452222 €,N/A,N/A
+2023,4.,% DES RECETTES TOTALES,70.31 %,N/A,N/A
+2023,5.,Total 1,1032612 €,N/A,N/A
+2023,5.1.,AMORTISSEMENT et CREDIT BAIL,25150 €,N/A,N/A
+2023,5.1.1.,Loyer location financière et Crédit bail,0 €,N/A,N/A
+2023,5.1.1.1.,Loyer - Véhicule,0 €,N/A,N/A
+2023,5.1.1.4.,Loyer - Divers,0 €,N/A,N/A
+2023,5.1.2.,Amortissement matériel,0 €,N/A,N/A
+2023,5.1.2.1.,Amortissement - Téléphonie,0 €,N/A,N/A
+2023,5.1.3.,Amortissement Mobilier Travaux,19728 €,N/A,N/A
+2023,5.1.3.1.,Mat. Para Hôtelier - Amortissement,328 €,N/A,N/A
+2023,5.1.3.3.,Mobilier - Amortissement,19401 €,N/A,N/A
+2023,5.1.4.,Agencement - Amortissement 80200003,5422 €,N/A,N/A
+2023,5.1.6.,Mobilier - CB et Loc Financière,0 €,N/A,N/A
+2023,5.2.,LOYERS REVERSES PROPRIETAIRES,857241 €,N/A,N/A
+2023,5.2.1.,Loyers reversés aux propriétaires,857241 €,N/A,N/A
+2023,5.3.,GROS TRAVAUX,0 €,N/A,N/A
+2023,5.3.1.,Gros travaux Parties Privatives,0 €,N/A,N/A
+2023,5.3.2.,Gros travaux Parties Communes,0 €,N/A,N/A
+2023,5.4.,INCIDENCE T.V.A,134424 €,N/A,N/A
+2023,5.4.1.,Incidence TVA (cc + prorata de gestion),114835 €,N/A,N/A
+2023,5.4.2.,Incidence TVA liée MDG et GARDIEN,19589 €,N/A,N/A
+2023,5.5.,CET (ex Taxe Pro),15796 €,N/A,N/A
+2023,6.,MARGE 2,419611 €,N/A,N/A
+2023,7.,% DES RECETTES TOTALES,20.32 %,N/A,N/A
+2023,8.,Total 2,169394 €,N/A,N/A
+2023,8.1.,PRESTATIONS INTERNES (Y/C Honoraires syndic),133356 €,N/A,N/A
+2023,8.2.,FRAIS DES SOCIETES,10696 €,N/A,N/A
+2023,8.2.1.,Frais des sociétés RSG,8666 €,N/A,N/A
+2023,8.2.7.,Incidence congés payés,2030 €,N/A,N/A
+2023,8.3.,HONORAIRES SYNDIC,25342 €,N/A,N/A
+2023,8.4.,CHARGES EXCEPTIONNELLES,0 €,N/A,N/A
+2023,8.4.1.,Mobilier revendu aux propriétaires,0 €,N/A,N/A
+2023,9.,MARGE 3,250217 €,N/A,N/A
+2023,10.,% DES RECETTES TOTALES,12.11 %,N/A,N/A
+2023,11.,Dotations aux amortissements (CAPEX),25150 €,N/A,N/A
+2023,12.,EBITDA,275367 €,N/A,N/A
+2023,13.,CAPEX,34342 €,N/A,N/A
+2023,14.,FREE CASH FLOW,241025 €,N/A,N/A
+2024,1.,RECETTES,2193409 €,N/A,N/A
+2024,1.1.,Loyers logements et parkings HT,2026364 €,N/A,N/A
+2024,1.1.1.,CA Locatif Estudines,2019099 €,N/A,N/A
+2024,1.1.4.,CA Locatif Parkings,7265 €,N/A,N/A
+2024,1.2.,RECETTES ANNEXES,203148 €,N/A,N/A
+2024,1.2.2.,CA Frais locatif,26810 €,N/A,N/A
+2024,1.2.5.,CA Laverie-Ménage,16936 €,N/A,N/A
+2024,1.2.5.2.,Laverie,16936 €,N/A,N/A
+2024,1.2.5.4.,Ménage supplémentaire,0 €,N/A,N/A
+2024,1.2.8.,CA Divers,1646 €,N/A,N/A
+2024,1.2.9.,Subvention d'exploitation (Rbst format°),0 €,N/A,N/A
+2024,1.2.12.,Charges de copro récupérables,157756 €,N/A,N/A
+2024,1.3.,Commission Agence TO,-526 €,N/A,N/A
+2024,1.4.,IMPAYES,-35577 €,N/A,N/A
+2024,1.4.1.,Impayés locataires,-8137 €,N/A,N/A
+2024,1.4.2.,Impayés Apparthotels,-27440 €,N/A,N/A
+2024,2.,CHARGES D'IMMEUBLE DIRECTES,663916 €,N/A,N/A
+2024,2.1.,FRAIS DE PERSONNEL,168150 €,N/A,N/A
+2024,2.1.1.,Salaires,84390 €,N/A,N/A
+2024,2.1.2.,Charges sur salaires,22108 €,N/A,N/A
+2024,2.1.3.,Prime,6605 €,N/A,N/A
+2024,2.1.6.,Personnel intérimaire,2112 €,N/A,N/A
+2024,2.1.8.,Frais Yser - Encadrement et commercial,31353 €,N/A,N/A
+2024,2.1.9.1.,Autres frais de personnel,4740 €,N/A,N/A
+2024,2.1.9.2.,Autres frais de personnel - formation,1000 €,N/A,N/A
+2024,2.1.10.,Prestataires sécurité gardiennage,786 €,N/A,N/A
+2024,2.1.10.1.,Prestataire sécurité gardiennage,786 €,N/A,N/A
+2024,2.1.11.,Nettoyage Parties Communes,2899 €,N/A,N/A
+2024,2.1.12.,Nettoyage Parties Privatives,15028 €,N/A,N/A
+2024,2.1.14.,Animation,0 €,N/A,N/A
+2024,2.2.,IMPOTS et TAXES DIVERSES,5502 €,N/A,N/A
+2024,2.2.2.,Taxe d'ordures ménagères,4081 €,N/A,N/A
+2024,2.2.3.,Taxe foncière / Taxe d'habitation,1421 €,N/A,N/A
+2024,2.2.3.1.,Taxe foncière / taxe d'habitation,0 €,N/A,N/A
+2024,2.2.3.2.,Taxe foncière Syndic,1421 €,N/A,N/A
+2024,2.2.4.1.,Autres impôts et taxes,0 €,N/A,N/A
+2024,2.3.,ENERGIE,339699 €,N/A,N/A
+2024,2.3.1.,EAU : (RSG-REA-YSER-LFP),258659 €,N/A,N/A
+2024,2.3.2.,EDF : (RSG-REA-LFP),20919 €,N/A,N/A
+2024,2.3.2.1.,EDF - Parties communes : Réel (50200000),15882 €,N/A,N/A
+2024,2.3.2.2.,EDF - Parties Privatives,3574 €,N/A,N/A
+2024,2.3.2.3.,EDF - Ascenseurs,1463 €,N/A,N/A
+2024,2.3.3.,Chauffage - Gaz,60121 €,N/A,N/A
+2024,2.4.,CONTRATS DE MAINTENANCE,48597 €,N/A,N/A
+2024,2.4.1.,Contrat de maintenance LFP,33565 €,N/A,N/A
+2024,2.4.1.2.,Maintenance - chauffage,0 €,N/A,N/A
+2024,2.4.1.3.,Maintenance - ascenseurs,4664 €,N/A,N/A
+2024,2.4.1.5.,Maintenance - parkings,1034 €,N/A,N/A
+2024,2.4.1.6.,Maintenance - espaces verts,4348 €,N/A,N/A
+2024,2.4.1.7.,Maintenance - sécurité,7403 €,N/A,N/A
+2024,2.4.1.8.,Maintenance - VMC,2248 €,N/A,N/A
+2024,2.4.1.9.,Maintenance - contrats divers,12368 €,N/A,N/A
+2024,2.4.1.13.,Maintenance - toiture,1500 €,N/A,N/A
+2024,2.4.2.,Autres charges de copropriété,3227 €,N/A,N/A
+2024,2.4.2.1.,Autres charges - 51000000,2114 €,N/A,N/A
+2024,2.4.2.4.,Autres charges - téléphone ascenseurs,1113 €,N/A,N/A
+2024,2.4.3.,Contrat maintenance (Hors Syndic),269 €,N/A,N/A
+2024,2.4.4.,ASSURANCE : (Immeuble para hotelier multirisque),11536 €,N/A,N/A
+2024,2.6.,REMISE EN ETAT PARTIES PRIVATIVES,32530 €,N/A,N/A
+2024,2.6.1.,Réparations Parties Privatives,32628 €,N/A,N/A
+2024,2.6.2.,Electroménager (605),3417 €,N/A,N/A
+2024,2.6.3.,"Mobilier, équipement (renouvellement)",12694 €,N/A,N/A
+2024,2.6.4.,Récupération sur les locataires,-16209 €,N/A,N/A
+2024,2.7.,REMISE EN ETAT PARTIES COMMUNES,24998 €,N/A,N/A
+2024,2.7.1.,Réparation Partie Commune (Syndic + Résidence),24998 €,N/A,N/A
+2024,2.7.1.3.,Réparation Partie Commune,24998 €,N/A,N/A
+2024,2.7.1.3.2.,Réparation - chauffage,0 €,N/A,N/A
+2024,2.7.1.3.3.,Réparation - ascenseurs,1715 €,N/A,N/A
+2024,2.7.1.3.4.,Réparation - parking,425 €,N/A,N/A
+2024,2.7.1.3.6.,Réparation - sécurité,6464 €,N/A,N/A
+2024,2.7.1.3.8.,Réparation - Réparation diverse,5365 €,N/A,N/A
+2024,2.7.1.3.12.,Réparation - Toiture,0 €,N/A,N/A
+2024,2.7.1.3.14.,Réparation - réparation PC syndic,0 €,N/A,N/A
+2024,2.7.1.4.,Prise en charge par fonds de prévoyance Copropriétaires,0 €,N/A,N/A
+2024,2.8.,LINGE ET BLANCHISSAGE,3350 €,N/A,N/A
+2024,2.8.1.,Location de linge + nettoyage de linge,3350 €,N/A,N/A
+2024,2.9.,FOURNITURES D'EXPLOITATION,3022 €,N/A,N/A
+2024,2.9.1.,Produits et matériel d'entretien,2962 €,N/A,N/A
+2024,2.9.3.,Vaisselle logement et cafétaria,0 €,N/A,N/A
+2024,2.9.3.2.,Vaisselle,0 €,N/A,N/A
+2024,2.9.5.,Achat petit équip. et fourn. / charges diverses d'exploit,59 €,N/A,N/A
+2024,2.9.5.4.,Achat - charges diverses d'exploitation,59 €,N/A,N/A
+2024,2.9.5.7.,Divers matériel et mobilier,0 €,N/A,N/A
+2024,2.10.,ACHAT ALIMENTAIRE PDJ,0 €,N/A,N/A
+2024,2.12.,"LOCATIONS, HONORAIRES, SACEM ET TV",4647 €,N/A,N/A
+2024,2.12.2.,Location immobilière (parking),0 €,N/A,N/A
+2024,2.12.2.1.,Location Immobilières,0 €,N/A,N/A
+2024,2.12.3.,Honoraire contentieux Gestion,4680 €,N/A,N/A
+2024,2.12.3.1.,Honoraire - juridiques et contentieux,4662 €,N/A,N/A
+2024,2.12.3.2.,Honoraire - divers,18 €,N/A,N/A
+2024,2.12.5.,Sacem,-33 €,N/A,N/A
+2024,2.12.6.,Redevance audio-visuelle,0 €,N/A,N/A
+2024,2.12.8.,Sous-traitance générale,0 €,N/A,N/A
+2024,2.13.,DEPLACEMENT ET MISSION,1120 €,N/A,N/A
+2024,2.14.,PUBLICITE,3011 €,N/A,N/A
+2024,2.14.1.,Publicité locale (résidence),75 €,N/A,N/A
+2024,2.14.7.,Publicité Estudines,2036 €,N/A,N/A
+2024,2.14.10.,"Autres frais commerciaux  (ex : touraction, mno…)",900 €,N/A,N/A
+2024,2.15.,Publicité Internet,3063 €,N/A,N/A
+2024,2.16.,FOURNITURES ADMINISTRATIVES,826 €,N/A,N/A
+2024,2.16.1.,"Fournitures (bureau, contrat, reprographie…)",521 €,N/A,N/A
+2024,2.16.1.1.,Fournitures administratives,266 €,N/A,N/A
+2024,2.16.1.3.,Reprographie,255 €,N/A,N/A
+2024,2.16.2.,Frais postaux,170 €,N/A,N/A
+2024,2.16.3.,Frais bancaires (compte séparé),135 €,N/A,N/A
+2024,2.16.3.1.,Frais bancaires,0 €,N/A,N/A
+2024,2.16.3.2.,Frais financiers,135 €,N/A,N/A
+2024,2.17.,TELEPHONIE - INTERNET - INFORMATIQUE,25401 €,N/A,N/A
+2024,2.17.1.,Téléphone (C° et Abonnement),1622 €,N/A,N/A
+2024,2.17.2.,Internet (location de ligne),23083 €,N/A,N/A
+2024,2.17.3.,Informatique,696 €,N/A,N/A
+2024,2.17.3.2.,Informatique - Logiciels / licences,696 €,N/A,N/A
+2024,3.,MARGE 1,1529494 €,N/A,N/A
+2024,4.,% DES RECETTES TOTALES,69.73 %,N/A,N/A
+2024,5.,Total 1,1088310 €,N/A,N/A
+2024,5.1.,AMORTISSEMENT et CREDIT BAIL,28095 €,N/A,N/A
+2024,5.1.1.,Loyer location financière et Crédit bail,0 €,N/A,N/A
+2024,5.1.1.1.,Loyer - Véhicule,0 €,N/A,N/A
+2024,5.1.1.4.,Loyer - Divers,0 €,N/A,N/A
+2024,5.1.2.,Amortissement matériel,0 €,N/A,N/A
+2024,5.1.2.1.,Amortissement - Téléphonie,0 €,N/A,N/A
+2024,5.1.3.,Amortissement Mobilier Travaux,21036 €,N/A,N/A
+2024,5.1.3.1.,Mat. Para Hôtelier - Amortissement,606 €,N/A,N/A
+2024,5.1.3.3.,Mobilier - Amortissement,20430 €,N/A,N/A
+2024,5.1.4.,Agencement - Amortissement 80200003,7059 €,N/A,N/A
+2024,5.1.6.,Mobilier - CB et Loc Financière,0 €,N/A,N/A
+2024,5.2.,LOYERS REVERSES PROPRIETAIRES,882289 €,N/A,N/A
+2024,5.2.1.,Loyers reversés aux propriétaires,882289 €,N/A,N/A
+2024,5.3.,GROS TRAVAUX,0 €,N/A,N/A
+2024,5.3.1.,Gros travaux Parties Privatives,0 €,N/A,N/A
+2024,5.3.2.,Gros travaux Parties Communes,0 €,N/A,N/A
+2024,5.4.,INCIDENCE T.V.A,160708 €,N/A,N/A
+2024,5.4.1.,Incidence TVA (cc + prorata de gestion),140727 €,N/A,N/A
+2024,5.4.2.,Incidence TVA liée MDG et GARDIEN,19981 €,N/A,N/A
+2024,5.5.,CET (ex Taxe Pro),17219 €,N/A,N/A
+2024,6.,MARGE 2,441184 €,N/A,N/A
+2024,7.,% DES RECETTES TOTALES,20.11 %,N/A,N/A
+2024,8.,Total 2,216976 €,N/A,N/A
+2024,8.1.,PRESTATIONS INTERNES (Y/C Honoraires syndic),180184 €,N/A,N/A
+2024,8.2.,FRAIS DES SOCIETES,11449 €,N/A,N/A
+2024,8.2.1.,Frais des sociétés RSG,8877 €,N/A,N/A
+2024,8.2.7.,Incidence congés payés,2573 €,N/A,N/A
+2024,8.3.,HONORAIRES SYNDIC,25342 €,N/A,N/A
+2024,8.4.,CHARGES EXCEPTIONNELLES,0 €,N/A,N/A
+2024,8.4.1.,Mobilier revendu aux propriétaires,0 €,N/A,N/A
+2024,9.,MARGE 3,224208 €,N/A,N/A
+2024,10.,% DES RECETTES TOTALES,10.22 %,N/A,N/A
+2024,11.,Dotations aux amortissements (CAPEX),28095 €,N/A,N/A
+2024,12.,EBITDA,252303 €,N/A,N/A
+2024,13.,CAPEX,15964 €,N/A,N/A
+2024,14.,FREE CASH FLOW,236339 €,N/A,N/A
+2025,1.,RECETTES,N/A,2182306 €,2205868 €
+2025,1.1.,Loyers logements et parkings HT,N/A,2023357 €,2038521 €
+2025,1.1.1.,CA Locatif Estudines,N/A,2017043 €,2031296 €
+2025,1.1.4.,CA Locatif Parkings,N/A,6315 €,7224 €
+2025,1.2.,RECETTES ANNEXES,N/A,171106 €,179398 €
+2025,1.2.2.,CA Frais locatif,N/A,21597 €,30696 €
+2025,1.2.5.,CA Laverie-Ménage,N/A,15624 €,15231 €
+2025,1.2.5.2.,Laverie,N/A,15624 €,15231 €
+2025,1.2.5.4.,Ménage supplémentaire,N/A,0 €,0 €
+2025,1.2.8.,CA Divers,N/A,3678 €,3501 €
+2025,1.2.9.,Subvention d'exploitation (Rbst format°),N/A,0 €,0 €
+2025,1.2.12.,Charges de copro récupérables,N/A,130208 €,129970 €
+2025,1.3.,Commission Agence TO,N/A,-1348 €,-1240 €
+2025,1.4.,IMPAYES,N/A,-10810 €,-10810 €
+2025,1.4.1.,Impayés locataires,N/A,-10810 €,-10810 €
+2025,1.4.2.,Impayés Apparthotels,N/A,0 €,0 €
+2025,2.,CHARGES D'IMMEUBLE DIRECTES,N/A,666871 €,650619 €
+2025,2.1.,FRAIS DE PERSONNEL,N/A,196281 €,202380 €
+2025,2.1.1.,Salaires,N/A,91891 €,90959 €
+2025,2.1.2.,Charges sur salaires,N/A,33439 €,27694 €
+2025,2.1.3.,Prime,N/A,10712 €,8648 €
+2025,2.1.6.,Personnel intérimaire,N/A,21759 €,37080 €
+2025,2.1.8.,Frais Yser - Encadrement et commercial,N/A,21677 €,23389 €
+2025,2.1.9.1.,Autres frais de personnel,N/A,8114 €,880 €
+2025,2.1.9.2.,Autres frais de personnel - formation,N/A,500 €,0 €
+2025,2.1.10.,Prestataires sécurité gardiennage,N/A,1956 €,1330 €
+2025,2.1.10.1.,Prestataire sécurité gardiennage,N/A,1956 €,1330 €
+2025,2.1.11.,Nettoyage Parties Communes,N/A,3144 €,4016 €
+2025,2.1.12.,Nettoyage Parties Privatives,N/A,7395 €,8824 €
+2025,2.1.14.,Animation,N/A,0 €,0 €
+2025,2.2.,IMPOTS et TAXES DIVERSES,N/A,5653 €,6452 €
+2025,2.2.2.,Taxe d'ordures ménagères,N/A,2973 €,3635 €
+2025,2.2.3.,Taxe foncière / Taxe d'habitation,N/A,2680 €,2698 €
+2025,2.2.3.1.,Taxe foncière / taxe d'habitation,N/A,1234 €,1234 €
+2025,2.2.3.2.,Taxe foncière Syndic,N/A,1446 €,1464 €
+2025,2.2.4.1.,Autres impôts et taxes,N/A,0 €,238 €
+2025,2.3.,ENERGIE,N/A,269587 €,273248 €
+2025,2.3.1.,EAU : (RSG-REA-YSER-LFP),N/A,172217 €,172145 €
+2025,2.3.2.,EDF : (RSG-REA-LFP),N/A,34400 €,44260 €
+2025,2.3.2.1.,EDF - Parties communes : Réel (50200000),N/A,29237 €,34545 €
+2025,2.3.2.2.,EDF - Parties Privatives,N/A,2248 €,5153 €
+2025,2.3.2.3.,EDF - Ascenseurs,N/A,2915 €,4562 €
+2025,2.3.3.,Chauffage - Gaz,N/A,62970 €,56843 €
+2025,2.4.,CONTRATS DE MAINTENANCE,N/A,67030 €,93021 €
+2025,2.4.1.,Contrat de maintenance LFP,N/A,42927 €,40486 €
+2025,2.4.1.2.,Maintenance - chauffage,N/A,3500 €,2776 €
+2025,2.4.1.3.,Maintenance - ascenseurs,N/A,4990 €,4822 €
+2025,2.4.1.5.,Maintenance - parkings,N/A,859 €,1077 €
+2025,2.4.1.6.,Maintenance - espaces verts,N/A,5730 €,5559 €
+2025,2.4.1.7.,Maintenance - sécurité,N/A,12862 €,11263 €
+2025,2.4.1.8.,Maintenance - VMC,N/A,640 €,640 €
+2025,2.4.1.9.,Maintenance - contrats divers,N/A,12846 €,12805 €
+2025,2.4.1.13.,Maintenance - toiture,N/A,1500 €,1545 €
+2025,2.4.2.,Autres charges de copropriété,N/A,3507 €,13496 €
+2025,2.4.2.1.,Autres charges - 51000000,N/A,2338 €,12364 €
+2025,2.4.2.4.,Autres charges - téléphone ascenseurs,N/A,1170 €,1131 €
+2025,2.4.3.,Contrat maintenance (Hors Syndic),N/A,9050 €,27149 €
+2025,2.4.4.,ASSURANCE : (Immeuble para hotelier multirisque),N/A,11546 €,11890 €
+2025,2.6.,REMISE EN ETAT PARTIES PRIVATIVES,N/A,21994 €,14480 €
+2025,2.6.1.,Réparations Parties Privatives,N/A,25893 €,14480 €
+2025,2.6.2.,Electroménager (605),N/A,5368 €,0 €
+2025,2.6.3.,"Mobilier, équipement (renouvellement)",N/A,2332 €,0 €
+2025,2.6.4.,Récupération sur les locataires,N/A,-11598 €,0 €
+2025,2.7.,REMISE EN ETAT PARTIES COMMUNES,N/A,45476 €,0 €
+2025,2.7.1.,Réparation Partie Commune (Syndic + Résidence),N/A,45476 €,0 €
+2025,2.7.1.3.,Réparation Partie Commune,N/A,46228 €,0 €
+2025,2.7.1.3.2.,Réparation - chauffage,N/A,0 €,0 €
+2025,2.7.1.3.3.,Réparation - ascenseurs,N/A,2732 €,0 €
+2025,2.7.1.3.4.,Réparation - parking,N/A,5826 €,0 €
+2025,2.7.1.3.6.,Réparation - sécurité,N/A,0 €,0 €
+2025,2.7.1.3.8.,Réparation - Réparation diverse,N/A,691 €,0 €
+2025,2.7.1.3.12.,Réparation - Toiture,N/A,750 €,0 €
+2025,2.7.1.3.14.,Réparation - réparation PC syndic,N/A,21537 €,0 €
+2025,2.7.1.4.,Prise en charge par fonds de prévoyance Copropriétaires,N/A,-752 €,0 €
+2025,2.8.,LINGE ET BLANCHISSAGE,N/A,2718 €,3602 €
+2025,2.8.1.,Location de linge + nettoyage de linge,N/A,2718 €,3602 €
+2025,2.9.,FOURNITURES D'EXPLOITATION,N/A,7052 €,2948 €
+2025,2.9.1.,Produits et matériel d'entretien,N/A,3683 €,2948 €
+2025,2.9.3.,Vaisselle logement et cafétaria,N/A,0 €,0 €
+2025,2.9.3.2.,Vaisselle,N/A,0 €,0 €
+2025,2.9.5.,Achat petit équip. et fourn. / charges diverses d'exploit,N/A,3369 €,0 €
+2025,2.9.5.4.,Achat - charges diverses d'exploitation,N/A,3369 €,0 €
+2025,2.9.5.7.,Divers matériel et mobilier,N/A,0 €,0 €
+2025,2.10.,ACHAT ALIMENTAIRE PDJ,N/A,0 €,0 €
+2025,2.12.,"LOCATIONS, HONORAIRES, SACEM ET TV",N/A,13217 €,11866 €
+2025,2.12.2.,Location immobilière (parking),N/A,0 €,0 €
+2025,2.12.2.1.,Location Immobilières,N/A,0 €,0 €
+2025,2.12.3.,Honoraire contentieux Gestion,N/A,8964 €,11866 €
+2025,2.12.3.1.,Honoraire - juridiques et contentieux,N/A,5675 €,0 €
+2025,2.12.3.2.,Honoraire - divers,N/A,3288 €,11866 €
+2025,2.12.5.,Sacem,N/A,0 €,0 €
+2025,2.12.6.,Redevance audio-visuelle,N/A,0 €,0 €
+2025,2.12.8.,Sous-traitance générale,N/A,4253 €,0 €
+2025,2.13.,DEPLACEMENT ET MISSION,N/A,1603 €,3124 €
+2025,2.14.,PUBLICITE,N/A,2874 €,5327 €
+2025,2.14.1.,Publicité locale (résidence),N/A,344 €,0 €
+2025,2.14.7.,Publicité Estudines,N/A,2530 €,5327 €
+2025,2.14.10.,"Autres frais commerciaux  (ex : touraction, mno…)",N/A,0 €,0 €
+2025,2.15.,Publicité Internet,N/A,4452 €,5781 €
+2025,2.16.,FOURNITURES ADMINISTRATIVES,N/A,1283 €,900 €
+2025,2.16.1.,"Fournitures (bureau, contrat, reprographie…)",N/A,745 €,0 €
+2025,2.16.1.1.,Fournitures administratives,N/A,464 €,0 €
+2025,2.16.1.3.,Reprographie,N/A,280 €,0 €
+2025,2.16.2.,Frais postaux,N/A,150 €,0 €
+2025,2.16.3.,Frais bancaires (compte séparé),N/A,389 €,900 €
+2025,2.16.3.1.,Frais bancaires,N/A,300 €,900 €
+2025,2.16.3.2.,Frais financiers,N/A,89 €,0 €
+2025,2.17.,TELEPHONIE - INTERNET - INFORMATIQUE,N/A,27650 €,27491 €
+2025,2.17.1.,Téléphone (C° et Abonnement),N/A,1527 €,0 €
+2025,2.17.2.,Internet (location de ligne),N/A,25413 €,27491 €
+2025,2.17.3.,Informatique,N/A,710 €,0 €
+2025,2.17.3.2.,Informatique - Logiciels / licences,N/A,710 €,0 €
+2025,3.,MARGE 1,N/A,1515435 €,1555249 €
+2025,4.,% DES RECETTES TOTALES,N/A,69.44 %,70.51 %
+2025,5.,Total 1,N/A,1115597 €,1128644 €
+2025,5.1.,AMORTISSEMENT et CREDIT BAIL,N/A,23186 €,27076 €
+2025,5.1.1.,Loyer location financière et Crédit bail,N/A,0 €,0 €
+2025,5.1.1.1.,Loyer - Véhicule,N/A,0 €,0 €
+2025,5.1.1.4.,Loyer - Divers,N/A,0 €,0 €
+2025,5.1.2.,Amortissement matériel,N/A,3 €,28 €
+2025,5.1.2.1.,Amortissement - Téléphonie,N/A,3 €,28 €
+2025,5.1.3.,Amortissement Mobilier Travaux,N/A,17246 €,27048 €
+2025,5.1.3.1.,Mat. Para Hôtelier - Amortissement,N/A,218 €,0 €
+2025,5.1.3.3.,Mobilier - Amortissement,N/A,17028 €,27048 €
+2025,5.1.4.,Agencement - Amortissement 80200003,N/A,5938 €,0 €
+2025,5.1.6.,Mobilier - CB et Loc Financière,N/A,0 €,0 €
+2025,5.2.,LOYERS REVERSES PROPRIETAIRES,N/A,905812 €,918344 €
+2025,5.2.1.,Loyers reversés aux propriétaires,N/A,905812 €,918344 €
+2025,5.3.,GROS TRAVAUX,N/A,3771 €,11312 €
+2025,5.3.1.,Gros travaux Parties Privatives,N/A,3771 €,11312 €
+2025,5.3.2.,Gros travaux Parties Communes,N/A,0 €,0 €
+2025,5.4.,INCIDENCE T.V.A,N/A,169684 €,154251 €
+2025,5.4.1.,Incidence TVA (cc + prorata de gestion),N/A,149104 €,133671 €
+2025,5.4.2.,Incidence TVA liée MDG et GARDIEN,N/A,20580 €,20580 €
+2025,5.5.,CET (ex Taxe Pro),N/A,13143 €,17662 €
+2025,6.,MARGE 2,N/A,399838 €,426605 €
+2025,7.,% DES RECETTES TOTALES,N/A,18.32 %,19.34 %
+2025,8.,Total 2,N/A,218108 €,204336 €
+2025,8.1.,PRESTATIONS INTERNES (Y/C Honoraires syndic),N/A,181468 €,168703 €
+2025,8.2.,FRAIS DES SOCIETES,N/A,11108 €,9531 €
+2025,8.2.1.,Frais des sociétés RSG,N/A,9143 €,9143 €
+2025,8.2.7.,Incidence congés payés,N/A,1965 €,388 €
+2025,8.3.,HONORAIRES SYNDIC,N/A,25532 €,26102 €
+2025,8.4.,CHARGES EXCEPTIONNELLES,N/A,0 €,0 €
+2025,8.4.1.,Mobilier revendu aux propriétaires,N/A,0 €,0 €
+2025,9.,MARGE 3,N/A,181730 €,222269 €
+2025,10.,% DES RECETTES TOTALES,N/A,8.33 %,10.08 %
+2025,11.,Dotations aux amortissements (CAPEX),N/A,23186 €,27076 €
+2025,12.,EBITDA,N/A,204917 €,249344 €
+2025,13.,CAPEX,N/A,19270 €,0 €
+2025,14.,FREE CASH FLOW,N/A,185646 €,249344 €
+2026,1.,RECETTES,N/A,N/A,2221683 €
+2026,1.1.,Loyers logements et parkings HT,N/A,N/A,2057395 €
+2026,1.1.1.,CA Locatif Estudines,N/A,N/A,2050195 €
+2026,1.1.4.,CA Locatif Parkings,N/A,N/A,7200 €
+2026,1.2.,RECETTES ANNEXES,N/A,N/A,176470 €
+2026,1.2.2.,CA Frais locatif,N/A,N/A,23420 €
+2026,1.2.5.,CA Laverie-Ménage,N/A,N/A,17700 €
+2026,1.2.5.2.,Laverie,N/A,N/A,17700 €
+2026,1.2.5.4.,Ménage supplémentaire,N/A,N/A,0 €
+2026,1.2.8.,CA Divers,N/A,N/A,3350 €
+2026,1.2.9.,Subvention d'exploitation (Rbst format°),N/A,N/A,0 €
+2026,1.2.12.,Charges de copro récupérables,N/A,N/A,132000 €
+2026,1.3.,Commission Agence TO,N/A,N/A,-1371 €
+2026,1.4.,IMPAYES,N/A,N/A,-10810 €
+2026,1.4.1.,Impayés locataires,N/A,N/A,-10810 €
+2026,1.4.2.,Impayés Apparthotels,N/A,N/A,0 €
+2026,2.,CHARGES D'IMMEUBLE DIRECTES,N/A,N/A,602278 €
+2026,2.1.,FRAIS DE PERSONNEL,N/A,N/A,145653 €
+2026,2.1.1.,Salaires,N/A,N/A,80128 €
+2026,2.1.2.,Charges sur salaires,N/A,N/A,26467 €
+2026,2.1.3.,Prime,N/A,N/A,9481 €
+2026,2.1.6.,Personnel intérimaire,N/A,N/A,12000 €
+2026,2.1.8.,Frais Yser - Encadrement et commercial,N/A,N/A,0 €
+2026,2.1.9.1.,Autres frais de personnel,N/A,N/A,8276 €
+2026,2.1.9.2.,Autres frais de personnel - formation,N/A,N/A,510 €
+2026,2.1.10.,Prestataires sécurité gardiennage,N/A,N/A,1995 €
+2026,2.1.10.1.,Prestataire sécurité gardiennage,N/A,N/A,1995 €
+2026,2.1.11.,Nettoyage Parties Communes,N/A,N/A,3657 €
+2026,2.1.12.,Nettoyage Parties Privatives,N/A,N/A,7531 €
+2026,2.1.14.,Animation,N/A,N/A,0 €
+2026,2.2.,IMPOTS et TAXES DIVERSES,N/A,N/A,5766 €
+2026,2.2.2.,Taxe d'ordures ménagères,N/A,N/A,3033 €
+2026,2.2.3.,Taxe foncière / Taxe d'habitation,N/A,N/A,2734 €
+2026,2.2.3.1.,Taxe foncière / taxe d'habitation,N/A,N/A,1259 €
+2026,2.2.3.2.,Taxe foncière Syndic,N/A,N/A,1475 €
+2026,2.2.4.1.,Autres impôts et taxes,N/A,N/A,0 €
+2026,2.3.,ENERGIE,N/A,N/A,274429 €
+2026,2.3.1.,EAU : (RSG-REA-YSER-LFP),N/A,N/A,175308 €
+2026,2.3.2.,EDF : (RSG-REA-LFP),N/A,N/A,35018 €
+2026,2.3.2.1.,EDF - Parties communes : Réel (50200000),N/A,N/A,29759 €
+2026,2.3.2.2.,EDF - Parties Privatives,N/A,N/A,2289 €
+2026,2.3.2.3.,EDF - Ascenseurs,N/A,N/A,2970 €
+2026,2.3.3.,Chauffage - Gaz,N/A,N/A,64103 €
+2026,2.4.,CONTRATS DE MAINTENANCE,N/A,N/A,69291 €
+2026,2.4.1.,Contrat de maintenance LFP,N/A,N/A,44705 €
+2026,2.4.1.2.,Maintenance - chauffage,N/A,N/A,3500 €
+2026,2.4.1.3.,Maintenance - ascenseurs,N/A,N/A,5090 €
+2026,2.4.1.5.,Maintenance - parkings,N/A,N/A,866 €
+2026,2.4.1.6.,Maintenance - espaces verts,N/A,N/A,5845 €
+2026,2.4.1.7.,Maintenance - sécurité,N/A,N/A,13119 €
+2026,2.4.1.8.,Maintenance - VMC,N/A,N/A,1652 €
+2026,2.4.1.9.,Maintenance - contrats divers,N/A,N/A,13103 €
+2026,2.4.1.13.,Maintenance - toiture,N/A,N/A,1530 €
+2026,2.4.2.,Autres charges de copropriété,N/A,N/A,3577 €
+2026,2.4.2.1.,Autres charges - 51000000,N/A,N/A,2384 €
+2026,2.4.2.4.,Autres charges - téléphone ascenseurs,N/A,N/A,1193 €
+2026,2.4.3.,Contrat maintenance (Hors Syndic),N/A,N/A,9231 €
+2026,2.4.4.,ASSURANCE : (Immeuble para hotelier multirisque),N/A,N/A,11777 €
+2026,2.6.,REMISE EN ETAT PARTIES PRIVATIVES,N/A,N/A,35000 €
+2026,2.6.1.,Réparations Parties Privatives,N/A,N/A,35000 €
+2026,2.6.2.,Electroménager (605),N/A,N/A,0 €
+2026,2.6.3.,"Mobilier, équipement (renouvellement)",N/A,N/A,0 €
+2026,2.6.4.,Récupération sur les locataires,N/A,N/A,0 €
+2026,2.7.,REMISE EN ETAT PARTIES COMMUNES,N/A,N/A,5000 €
+2026,2.7.1.,Réparation Partie Commune (Syndic + Résidence),N/A,N/A,5000 €
+2026,2.7.1.3.,Réparation Partie Commune,N/A,N/A,5000 €
+2026,2.7.1.3.2.,Réparation - chauffage,N/A,N/A,0 €
+2026,2.7.1.3.3.,Réparation - ascenseurs,N/A,N/A,0 €
+2026,2.7.1.3.4.,Réparation - parking,N/A,N/A,0 €
+2026,2.7.1.3.6.,Réparation - sécurité,N/A,N/A,0 €
+2026,2.7.1.3.8.,Réparation - Réparation diverse,N/A,N/A,0 €
+2026,2.7.1.3.12.,Réparation - Toiture,N/A,N/A,0 €
+2026,2.7.1.3.14.,Réparation - réparation PC syndic,N/A,N/A,0 €
+2026,2.7.1.4.,Prise en charge par fonds de prévoyance Copropriétaires,N/A,N/A,0 €
+2026,2.8.,LINGE ET BLANCHISSAGE,N/A,N/A,2435 €
+2026,2.8.1.,Location de linge + nettoyage de linge,N/A,N/A,2435 €
+2026,2.9.,FOURNITURES D'EXPLOITATION,N/A,N/A,6291 €
+2026,2.9.1.,Produits et matériel d'entretien,N/A,N/A,2874 €
+2026,2.9.3.,Vaisselle logement et cafétaria,N/A,N/A,0 €
+2026,2.9.3.2.,Vaisselle,N/A,N/A,0 €
+2026,2.9.5.,Achat petit équip. et fourn. / charges diverses d'exploit,N/A,N/A,3417 €
+2026,2.9.5.4.,Achat - charges diverses d'exploitation,N/A,N/A,3417 €
+2026,2.9.5.7.,Divers matériel et mobilier,N/A,N/A,0 €
+2026,2.10.,ACHAT ALIMENTAIRE PDJ,N/A,N/A,0 €
+2026,2.12.,"LOCATIONS, HONORAIRES, SACEM ET TV",N/A,N/A,15113 €
+2026,2.12.2.,Location immobilière (parking),N/A,N/A,2028 €
+2026,2.12.2.1.,Location Immobilières,N/A,N/A,2028 €
+2026,2.12.3.,Honoraire contentieux Gestion,N/A,N/A,9113 €
+2026,2.12.3.1.,Honoraire - juridiques et contentieux,N/A,N/A,5759 €
+2026,2.12.3.2.,Honoraire - divers,N/A,N/A,3354 €
+2026,2.12.5.,Sacem,N/A,N/A,2 €
+2026,2.12.6.,Redevance audio-visuelle,N/A,N/A,0 €
+2026,2.12.8.,Sous-traitance générale,N/A,N/A,3969 €
+2026,2.13.,DEPLACEMENT ET MISSION,N/A,N/A,1635 €
+2026,2.14.,PUBLICITE,N/A,N/A,8071 €
+2026,2.14.1.,Publicité locale (résidence),N/A,N/A,0 €
+2026,2.14.7.,Publicité Estudines,N/A,N/A,8071 €
+2026,2.14.10.,"Autres frais commerciaux  (ex : touraction, mno…)",N/A,N/A,0 €
+2026,2.15.,Publicité Internet,N/A,N/A,4056 €
+2026,2.16.,FOURNITURES ADMINISTRATIVES,N/A,N/A,1272 €
+2026,2.16.1.,"Fournitures (bureau, contrat, reprographie…)",N/A,N/A,725 €
+2026,2.16.1.1.,Fournitures administratives,N/A,N/A,466 €
+2026,2.16.1.3.,Reprographie,N/A,N/A,260 €
+2026,2.16.2.,Frais postaux,N/A,N/A,150 €
+2026,2.16.3.,Frais bancaires (compte séparé),N/A,N/A,396 €
+2026,2.16.3.1.,Frais bancaires,N/A,N/A,306 €
+2026,2.16.3.2.,Frais financiers,N/A,N/A,91 €
+2026,2.17.,TELEPHONIE - INTERNET - INFORMATIQUE,N/A,N/A,28267 €
+2026,2.17.1.,Téléphone (C° et Abonnement),N/A,N/A,1628 €
+2026,2.17.2.,Internet (location de ligne),N/A,N/A,25922 €
+2026,2.17.3.,Informatique,N/A,N/A,717 €
+2026,2.17.3.2.,Informatique - Logiciels / licences,N/A,N/A,717 €
+2026,3.,MARGE 1,N/A,N/A,1619405 €
+2026,4.,% DES RECETTES TOTALES,N/A,N/A,72.89 %
+2026,5.,Total 1,N/A,N/A,1125933 €
+2026,5.1.,AMORTISSEMENT et CREDIT BAIL,N/A,N/A,34447 €
+2026,5.1.1.,Loyer location financière et Crédit bail,N/A,N/A,0 €
+2026,5.1.1.1.,Loyer - Véhicule,N/A,N/A,0 €
+2026,5.1.1.4.,Loyer - Divers,N/A,N/A,0 €
+2026,5.1.2.,Amortissement matériel,N/A,N/A,0 €
+2026,5.1.2.1.,Amortissement - Téléphonie,N/A,N/A,0 €
+2026,5.1.3.,Amortissement Mobilier Travaux,N/A,N/A,25200 €
+2026,5.1.3.1.,Mat. Para Hôtelier - Amortissement,N/A,N/A,0 €
+2026,5.1.3.3.,Mobilier - Amortissement,N/A,N/A,25200 €
+2026,5.1.4.,Agencement - Amortissement 80200003,N/A,N/A,9246 €
+2026,5.1.6.,Mobilier - CB et Loc Financière,N/A,N/A,0 €
+2026,5.2.,LOYERS REVERSES PROPRIETAIRES,N/A,N/A,916686 €
+2026,5.2.1.,Loyers reversés aux propriétaires,N/A,N/A,916686 €
+2026,5.3.,GROS TRAVAUX,N/A,N/A,0 €
+2026,5.3.1.,Gros travaux Parties Privatives,N/A,N/A,0 €
+2026,5.3.2.,Gros travaux Parties Communes,N/A,N/A,0 €
+2026,5.4.,INCIDENCE T.V.A,N/A,N/A,163538 €
+2026,5.4.1.,Incidence TVA (cc + prorata de gestion),N/A,N/A,142546 €
+2026,5.4.2.,Incidence TVA liée MDG et GARDIEN,N/A,N/A,20992 €
+2026,5.5.,CET (ex Taxe Pro),N/A,N/A,11263 €
+2026,6.,MARGE 2,N/A,N/A,493472 €
+2026,7.,% DES RECETTES TOTALES,N/A,N/A,22.21 %
+2026,8.,Total 2,N/A,N/A,195815 €
+2026,8.1.,PRESTATIONS INTERNES (Y/C Honoraires syndic),N/A,N/A,168469 €
+2026,8.2.,FRAIS DES SOCIETES,N/A,N/A,2004 €
+2026,8.2.1.,Frais des sociétés RSG,N/A,N/A,0 €
+2026,8.2.7.,Incidence congés payés,N/A,N/A,2004 €
+2026,8.3.,HONORAIRES SYNDIC,N/A,N/A,25342 €
+2026,8.4.,CHARGES EXCEPTIONNELLES,N/A,N/A,0 €
+2026,8.4.1.,Mobilier revendu aux propriétaires,N/A,N/A,0 €
+2026,9.,MARGE 3,N/A,N/A,297657 €
+2026,10.,% DES RECETTES TOTALES,N/A,N/A,13.40 %
+2026,11.,Dotations aux amortissements (CAPEX),N/A,N/A,34447 €
+2026,12.,EBITDA,N/A,N/A,332103 €
+2026,13.,CAPEX,N/A,N/A,0 €
+2026,14.,FREE CASH FLOW,N/A,N/A,332103 €

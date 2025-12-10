@@ -225,7 +225,6 @@ def format_response(content):
     content = convert_markdown_to_html(content)
     content = content.lstrip('\n')
     content = content.replace("\r\n", "\n")
-    content = content.replace("\r", "\n")
     content = add_br_outside_blocks(content)
     content = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", content)
     content = re.sub(r"__(.+?)__", r"<b>\1</b>", content)
