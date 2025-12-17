@@ -15,6 +15,8 @@ from wordcloud import WordCloud
 from app.core import config
 from app.models.classifier import predict_category
 from app.schemas.schemas import (
+    AnalysisRequest,
+    AnalysisResponse,
     ChatRequest,
     ChatResponse,
     EndSessionRequest,
@@ -128,6 +130,8 @@ async def init_session(request: InitSessionRequest):
         )
         simple_dict = create_simplified_hierarchy(res)
         context_data = preprocessing_data(context_data, simple_dict).copy()
+        if context_data["Section  analytique"].unique().tolist() in [[''], [], None]:
+            context_data["Section  analytique"] = context_data["Liste de sélection"]
         try:
             r.set(session_id, pickle.dumps([context_data, [], simple_dict, request.sa_fk, request.form_fk, df_residences]))
         except Exception as e:
@@ -333,6 +337,87 @@ async def end_session(request: EndSessionRequest):
         return {"message": "Session terminée."}
     else:
         raise HTTPException(status_code=404, detail="Session non trouvée.")
+
+
+@router.post("/analyse", response_model=AnalysisResponse, summary="Générer une analyse pour un SA")
+async def get_analysis(request: AnalysisRequest):
+    """
+    Génère une analyse textuelle pour un SA donné.
+
+    - **sa_fk**: L'ID du SA à analyser.
+
+    Retourne une analyse textuelle.
+    """
+    try:
+        start_time = datetime.now()
+        res = await execute_sp(
+            "dbo.sp_chatBotSAAnalyse_get",
+            {
+                "user_fk": config.USER_FK,
+                "sa_fk": request.sa_fk
+            },
+            config.DATABASE_URL_IA
+        )
+        if not res or not isinstance(res, list) or not res[0].get("analyseGlobal"):
+            logger.warning(f"Aucune analyse générée pour le SA {request.sa_fk}.")
+            raise HTTPException(status_code=404, detail="Aucune analyse trouvée.")
+        analyseGlobal: str = res[0].get("analyseGlobal", "Non disponible")
+        analyseRecette: str = res[0].get("analyseRecette", "Non disponible")
+        analyseCharge: str = res[0].get("analyseCharge", "Non disponible")
+
+        analyseGlobal = analyseGlobal.replace("\\s", "\u202f")
+        analyseGlobal = format_response(analyseGlobal)
+        analyseGlobal = analyseGlobal.replace("\n", "")
+        
+        analyseRecette = analyseRecette.replace("\\s", "\u202f")
+        analyseRecette = format_response(analyseRecette)
+        analyseRecette = analyseRecette.replace("\n", "")
+        
+        analyseCharge = analyseCharge.replace("\\s", "\u202f")
+        analyseCharge = format_response(analyseCharge)
+        analyseCharge = analyseCharge.replace("\n", "")
+        
+        end_time = datetime.now()
+        execution_time = end_time - start_time
+        logger.info(f"Analyse générée pour le SA {request.sa_fk}.")
+        # Génère un code HTML basique pour choisir l'analyse à afficher
+        html = f"""
+        <h6><b>Choisissez une analyse</b></h6>
+        <form id="choixAnalyse" style="display: flex; flex-direction: column; gap: 5px; margin-bottom: 10px; padding: 0px 15px; align-items: flex-start;">
+            <div style="display: flex; align-items: center; width: 100%; padding: 0px;">
+                <input type="radio" id="globale" name="analyse" value="globale" checked style="accent-color: #007bff; width: 14px; height: 14px;">
+                <label for="globale" style="margin-left: 8px; font-weight: 600; font-size: 14px; cursor:pointer;">Globale</label>
+            </div>
+            <div style="display: flex; align-items: center; width: 100%; padding: 0px;">
+                <input type="radio" id="recette" name="analyse" value="recette" style="accent-color: #007bff; width: 14px; height: 14px;">
+                <label for="recette" style="margin-left: 8px; font-weight: 600; font-size: 14px; cursor:pointer;">Recette</label>
+            </div>
+            <div style="display: flex; align-items: center; width: 100%; padding: 0px;">
+                <input type="radio" id="charge" name="analyse" value="charge" style="accent-color: #007bff; width: 14px; height: 14px;">
+                <label for="charge" style="margin-left: 8px; font-weight: 600; font-size: 14px; cursor:pointer;">Charge</label>
+            </div>
+        </form>
+        <div id="resultatAnalyse" style="width: 100%; padding: 0px;">
+            {format_response(analyseGlobal).replace("<p", '<p style="width: 230px;"')}
+        </div>
+        <script>
+            var analyseData = {{
+                "globale": `{format_response(analyseGlobal).replace("<p", '<p style="width: 230px;"')}`,
+                "recette": `{format_response(analyseRecette).replace("<p", '<p style="width: 230px;"')}`,
+                "charge": `{format_response(analyseCharge).replace("<p", '<p style="width: 230px;"')}`
+            }};
+            document.querySelectorAll('input[name="analyse"]').forEach(el => {{
+                el.addEventListener('change', function() {{
+                    document.getElementById('resultatAnalyse').innerHTML = analyseData[this.value];
+                }});
+            }});
+        </script>
+        """
+        formatted_time = format_time(execution_time)
+        return {"analysis": html, "response_time": formatted_time}
+    except Exception as e:
+        logger.error(f"Erreur lors de la génération de l'analyse pour le SA {request.sa_fk}: {e}")
+        raise HTTPException(status_code=500, detail="Erreur lors de la génération de l'analyse.")
 
 
 @router.get("/get_wordcloud", response_model=WordCloudResponse, summary="Générer un nuage de mots")

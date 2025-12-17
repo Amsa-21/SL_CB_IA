@@ -201,7 +201,7 @@ def extract_all_descendants_for_list(data_list: list) -> list[list]:
     return result
 
 @log_function_call
-def preprocessing_data(df: pd.DataFrame, simple_dict: list[dict]) -> pd.DataFrame:
+def preprocessing_data(df: pd.DataFrame, simple_dict: list[dict], colonne_type: str = "Année contexte") -> pd.DataFrame:
     """Prétraite et catégorise le DataFrame selon les groupes définis."""
     try:
         required_columns = ['Lignes', 'Contexte', 'Nature de l\'écriture', 'Année', 'Mois', 'Montant']
@@ -210,8 +210,7 @@ def preprocessing_data(df: pd.DataFrame, simple_dict: list[dict]) -> pd.DataFram
                 raise ValueError(f"La colonne requise '{col}' est absente du DataFrame.")
         mask = (
             (df.iloc[:, 0] == df.iloc[0, 0]) &
-            (df.iloc[:, 2] == "Compte d'exploitation") &
-            (df.iloc[:, 8] != "Colonne variation")
+            (df.iloc[:, 2] == "Compte d'exploitation")
         )
         df_filtered: pd.DataFrame
         df_filtered = df[mask].copy()
@@ -266,19 +265,18 @@ def preprocessing_data(df: pd.DataFrame, simple_dict: list[dict]) -> pd.DataFram
         groupes_mapping = {poste: groupe for groupe, postes in groupes_dict.items() for poste in postes}
         df_filtered['Groupe'] = df_filtered['Lignes'].map(groupes_mapping)
 
-        mask_pct = df_filtered['Lignes'] == "% DES RECETTES TOTALES"
+        mask_pct = (df_filtered['Lignes'] == "% DES RECETTES TOTALES") | (df_filtered['Colonnes'].str.contains('%', na=False))
         mask_non_pct = ~mask_pct
 
-        # Process non-pct as before
-        df_filtered.loc[mask_non_pct, "Montant"] = df_filtered.loc[mask_non_pct, "Montant"].round(0).astype(int)
+        # Correction : bien gérer le typage et l'arrondi sans convertir en int les NaN et préserver les floats si NaN
+        df_filtered.loc[mask_non_pct, "Montant"] = df_filtered.loc[mask_non_pct, "Montant"].round(0)
+        mask_non_pct_non_nan = mask_non_pct & df_filtered['Montant'].notna()
+        df_filtered.loc[mask_non_pct_non_nan, "Montant"] = df_filtered.loc[mask_non_pct_non_nan, "Montant"].astype(int)
 
-        # Ensure we handle dtype for mask_pct
         if mask_pct.any():
-            montant_pct = df_filtered.loc[mask_pct, "Montant"].round(2).astype(str) + "%"
-            # Cast to object dtype before assignment to avoid FutureWarning
-            df_filtered["Montant"] = df_filtered["Montant"].astype("object")
-            df_filtered.loc[mask_pct, "Montant"] = montant_pct
-        
+            df_filtered.loc[mask_pct, "Montant"] = df_filtered.loc[mask_pct, "Montant"].round(2)
+            
+        df_filtered = df_filtered[df_filtered["Type de colonnes"] == colonne_type].copy()
         df_filtered = df_filtered.drop_duplicates().reset_index(drop=True)
         return df_filtered
     except Exception as e:

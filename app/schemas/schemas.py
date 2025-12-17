@@ -22,5 +22,12 @@ class EndSessionRequest(BaseModel):
 class EndSessionResponse(BaseModel):
     message: str = Field(..., description="Message de confirmation de la fin de session.", example="Session terminée avec succès.")
 
+class AnalysisRequest(BaseModel):
+    sa_fk: int = Field(..., description="Identifiant unique du SA à analyser.", example=224)
+
+class AnalysisResponse(BaseModel):
+    analysis: str = Field(..., description="Analyse textuelle générée.", example="Analyse pour le SA avec l'ID 224. Ceci est un texte d'analyse placeholder.")
+    response_time: str = Field(..., description="Temps de réponse du LLM", example="2m 35s")
+
 class WordCloudResponse(BaseModel):
     image: str = Field(..., description="Image encodée en base64 représentant le nuage de mots généré.", example="iVBORw0KGgoAAAANSUhEUgAA...")  # Exemple base64 tronqué
