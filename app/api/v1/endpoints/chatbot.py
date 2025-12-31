@@ -39,7 +39,6 @@ from app.utils.functions import (
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
-
 r = redis.Redis()
 
 @router.get("/")
@@ -133,12 +132,13 @@ async def init_session(request: InitSessionRequest):
         if context_data["Section  analytique"].unique().tolist() in [[''], [], None]:
             context_data["Section  analytique"] = context_data["Liste de sélection"]
         try:
-            r.set(session_id, pickle.dumps([context_data, [], simple_dict, request.sa_fk, request.form_fk, df_residences]))
+            history = []
+            history.append({"role": "system", "content": config.PROMPT_SYSTEM},)
+            r.set(session_id, pickle.dumps([context_data, history, simple_dict, request.sa_fk, request.form_fk, df_residences]))
         except Exception as e:
             logger.error(f"Erreur lors de l'enregistrement de la session dans Redis : {e}")
             raise HTTPException(status_code=500, detail="Erreur lors de l'initialisation de la session (Redis).")
         logger.info(f"Nouvelle session initialisée : {session_id} ¤ {str(context_data.iloc[1, 0]).split(' - ')[1]} - {context_data.iloc[1, 2]}")
-
         return {"session_id": session_id}
     except Exception as e:
         logger.error(f"Erreur inattendue lors de l'initialisation de la session : {e}")
@@ -176,7 +176,7 @@ async def chat(request: ChatRequest):
     try:
         context_data, history_list, simple_dict, sa_fk, form_fk, residences = pickle.loads(res)
         history = list(history_list)
-        
+
         if len(history) > config.HISTORY_LENGTH*2:
             history = [history[0]] + history[-config.HISTORY_LENGTH*2:]
         lexiques = await get_mapping()
@@ -361,22 +361,20 @@ async def get_analysis(request: AnalysisRequest):
         if not res or not isinstance(res, list) or not res[0].get("analyseGlobal"):
             logger.warning(f"Aucune analyse générée pour le SA {request.sa_fk}.")
             raise HTTPException(status_code=404, detail="Aucune analyse trouvée.")
-        analyseGlobal: str = res[0].get("analyseGlobal", "Non disponible")
-        analyseRecette: str = res[0].get("analyseRecette", "Non disponible")
-        analyseCharge: str = res[0].get("analyseCharge", "Non disponible")
 
-        analyseGlobal = analyseGlobal.replace("\\s", "\u202f")
-        analyseGlobal = format_response(analyseGlobal)
-        analyseGlobal = analyseGlobal.replace("\n", "")
-        
-        analyseRecette = analyseRecette.replace("\\s", "\u202f")
-        analyseRecette = format_response(analyseRecette)
-        analyseRecette = analyseRecette.replace("\n", "")
-        
-        analyseCharge = analyseCharge.replace("\\s", "\u202f")
-        analyseCharge = format_response(analyseCharge)
-        analyseCharge = analyseCharge.replace("\n", "")
-        
+        def clean_analyse_text(txt: str) -> str:
+            if not txt:
+                return "Non disponible"
+            txt = txt.replace("\\s", "\u202f")
+            txt = format_response(txt)
+            txt = txt.replace("\n", "")
+            txt = txt.strip()
+            return txt
+
+        analyseGlobal: str = clean_analyse_text(res[0].get("analyseGlobal"))
+        analyseRecette: str = clean_analyse_text(res[0].get("analyseRecette"))
+        analyseCharge: str = clean_analyse_text(res[0].get("analyseCharge"))
+
         end_time = datetime.now()
         execution_time = end_time - start_time
         logger.info(f"Analyse générée pour le SA {request.sa_fk}.")
@@ -398,13 +396,36 @@ async def get_analysis(request: AnalysisRequest):
             </div>
         </form>
         <div id="resultatAnalyse" style="width: 100%; padding: 0px;">
-            {format_response(analyseGlobal).replace("<p", '<p style="width: 230px;"')}
+            {format_response(analyseGlobal)
+                .replace("<p", '<p style="width: 230px;"')
+                .replace("<ul", '<ul style="padding-left: 5px; width: 230px;"')
+                .replace("<li", '<li style="margin-bottom: 5px;"')
+                .replace("<ol", '<ol style="padding-left: 5px; width: 230px;"')
+            }
         </div>
         <script>
             var analyseData = {{
-                "globale": `{format_response(analyseGlobal).replace("<p", '<p style="width: 230px;"')}`,
-                "recette": `{format_response(analyseRecette).replace("<p", '<p style="width: 230px;"')}`,
-                "charge": `{format_response(analyseCharge).replace("<p", '<p style="width: 230px;"')}`
+                "globale": `{
+                    format_response(analyseGlobal)
+                        .replace("<p", '<p style="width: 230px;"')
+                        .replace("<ul", '<ul style="padding-left: 5px; width: 230px;"')
+                        .replace("<li", '<li style="margin-bottom: 5px;"')
+                        .replace("<ol", '<ol style="padding-left: 5px; width: 230px;"')
+                    }`,
+                "recette": `{
+                    format_response(analyseRecette)
+                        .replace("<p", '<p style="width: 230px;"')
+                        .replace("<ul", '<ul style="padding-left: 5px; width: 230px;"')
+                        .replace("<li", '<li style="margin-bottom: 5px;"')
+                        .replace("<ol", '<ol style="padding-left: 5px; width: 230px;"')
+                    }`,
+                "charge": `{
+                    format_response(analyseCharge)
+                        .replace("<p", '<p style="width: 230px;"')
+                        .replace("<ul", '<ul style="padding-left: 5px; width: 230px;"')
+                        .replace("<li", '<li style="margin-bottom: 5px;"')
+                        .replace("<ol", '<ol style="padding-left: 5px; width: 230px;"')
+                    }`
             }};
             document.querySelectorAll('input[name="analyse"]').forEach(el => {{
                 el.addEventListener('change', function() {{

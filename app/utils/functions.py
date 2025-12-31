@@ -7,9 +7,11 @@ from typing import Any, Dict, List
 import unicodedata
 
 import markdown as _md
+import numpy as np
 import pandas as pd
 from sqlalchemy import text
 from sqlalchemy.exc import ProgrammingError
+from tabulate import tabulate
 from thefuzz import fuzz
 
 from app.core import config
@@ -201,7 +203,7 @@ def extract_all_descendants_for_list(data_list: list) -> list[list]:
     return result
 
 @log_function_call
-def preprocessing_data(df: pd.DataFrame, simple_dict: list[dict], colonne_type: str = "Année contexte") -> pd.DataFrame:
+def preprocessing_data(df: pd.DataFrame, simple_dict: list[dict], colonne_type: str|None = "Année contexte") -> pd.DataFrame:
     """Prétraite et catégorise le DataFrame selon les groupes définis."""
     try:
         required_columns = ['Lignes', 'Contexte', 'Nature de l\'écriture', 'Année', 'Mois', 'Montant']
@@ -275,8 +277,10 @@ def preprocessing_data(df: pd.DataFrame, simple_dict: list[dict], colonne_type: 
 
         if mask_pct.any():
             df_filtered.loc[mask_pct, "Montant"] = df_filtered.loc[mask_pct, "Montant"].round(2)
-            
-        df_filtered = df_filtered[df_filtered["Type de colonnes"] == colonne_type].copy()
+        
+        if colonne_type:
+            df_filtered = df_filtered[df_filtered["Type de colonnes"] == colonne_type].copy()
+
         df_filtered = df_filtered.drop_duplicates().reset_index(drop=True)
         return df_filtered
     except Exception as e:
@@ -323,7 +327,7 @@ async def parse_user_query(
         lst = await execute_sp(
             "dbo.sp_simBudCol",
             {
-                "user_fk": 8,
+                "user_fk": config.USER_FK,
                 "codeMetier": 'EXP',
                 "form_fk": 167,
                 "codeFormType": None,
@@ -417,7 +421,7 @@ async def parse_user_query(
                     types_valeur.add('B')
                 if re.search(r"prevision|prevu|projection|project|prev", ent_text_noacc):
                     types_valeur.add('P')
-        return sorted(types_valeur)
+        return sorted(types_valeur)#! if len(types_valeur) > 0 else ['R']
     params['types_valeur'] = _define_contexte(query_lower)
 
     # ANNEE
@@ -564,6 +568,8 @@ async def parse_user_query(
         nature_ecritures = set()
         if re.search(r"\b(mensuel(le)?|mois|trimestre|semestre|janvier|février|fevrier|mars|avril|mai|juin|juillet|août|aout|septembre|octobre|novembre|décembre|decembre)\b", question):
             nature_ecritures.add('Mensuelle')
+        if params['mois']:
+            nature_ecritures.add('Mensuelle')
         if re.search(r"\b(annuel(le)?|total|cette année|cette annee|année|annee)\b", question):
             nature_ecritures.add('Annuelle')
         if not nature_ecritures:
@@ -659,9 +665,6 @@ async def parse_user_query(
 
     if not params['nature_ecriture']:
         params['nature_ecriture'] = ['Annuelle']
-
-    if not params['annees']:
-        params['annees'] = [datetime.now().year]
 
     return params
 
@@ -1028,7 +1031,417 @@ async def get_data_for_llm(
     if df_final.empty:
         return False, None
     else:
-        return True, df_final.to_markdown(index=False)
+        df_to_display = df_final.copy()
+        table_str = tabulate(df_to_display, headers="keys", tablefmt="simple", showindex=False, numalign="right", stralign="left")
+        return True, table_str
+
+""""""
+
+@log_function_call
+def data_to_pivot(df: pd.DataFrame) -> pd.DataFrame:
+    if df["Section  analytique"].unique().tolist() in [[''], [], None]:
+        df["Section  analytique"] = df["Liste de sélection"]
+        
+    # Renommage et nettoyage
+    df = df.rename(
+        columns={
+            'Code Hiérarchique': 'Code_H', 
+            'Montant': 'Montant',
+            'Lignes': 'Ligne_Analytique',
+            'Contexte': 'Contexte',
+            'Année': 'Annee',
+            'Groupe': 'Groupe',
+            'Section  analytique': 'Residence'
+        }
+    )
+
+    df['Annee'] = df['Annee'].astype(int)
+    df['Mois'] = df['Mois'].astype(int)
+
+    df_agg = df.groupby(
+        [
+            'Residence', 'Colonnes', 'Annee', 'Mois', "Nature de l'écriture", 'Contexte', 'Code_H', 'Ligne_Analytique', 'Groupe'
+        ]
+    )['Montant'].sum().reset_index()
+
+    contexte_order = ['R', 'P', 'B']
+
+    def _mois_sort_key(mois):
+        try:
+            return int(mois)
+        except:
+            return 99
+
+    df_pivot = df_agg.pivot_table(
+        index=['Groupe', 'Code_H', 'Ligne_Analytique'],
+        columns=['Annee', 'Contexte', 'Mois', "Nature de l'écriture"],
+        values='Montant',
+        fill_value="",
+        aggfunc='sum'
+    )
+    # Explicitly infer objects to avoid FutureWarning from fill_value on object dtype
+    df_pivot = df_pivot.infer_objects(copy=False)
+
+    if df_pivot.columns.nlevels == 4:
+        nature_unique = df_pivot.columns.get_level_values(3).unique().tolist()
+        if "Annuelle" in nature_unique:
+            nature_unique = [n for n in nature_unique if n != "Annuelle"]
+            nature_order_desc = sorted(nature_unique, reverse=True) + ["Annuelle"]
+        else:
+            nature_order_desc = sorted(nature_unique, reverse=True)
+        nature_order_dict = {name: i for i, name in enumerate(nature_order_desc)}
+        
+        def _col_sort_key(x):
+            return (
+                int(x[0]) if str(x[0]).isdigit() else 0,
+                contexte_order.index(x[1]) if x[1] in contexte_order else 99,
+                _mois_sort_key(x[2]),
+                nature_order_dict.get(x[3], 999)
+            )
+        df_pivot = df_pivot[sorted(df_pivot.columns, key=_col_sort_key)]
+
+    df_pivot = df_pivot.reset_index()
+
+    def _code_hierarchical_sort_key(code):
+        parts = [int(part) if part.isdigit() else part for part in re.split(r'\D+', str(code).strip('.')) if part]
+        return parts
+
+    df_pivot_sorted = df_pivot.copy()
+    df_pivot_sorted['__sort_key'] = df_pivot_sorted['Code_H'].apply(_code_hierarchical_sort_key)
+    df_pivot_sorted = df_pivot_sorted.sort_values('__sort_key').drop(columns='__sort_key', level=0).reset_index(drop=True)
+
+    def _format_value(val):
+        try:
+            if isinstance(val, (float, np.floating, int, np.integer)):
+                if float(val) == int(val):
+                    return int(val)
+                else:
+                    return "{:.2f}".format(float(val))
+
+            if isinstance(val, str):
+                num = float(val.replace(",", ".").strip())
+                if num == int(num):
+                    return int(num)
+                else:
+                    return "{:.2f}".format(num)
+            return val
+        except:
+            return val
+
+    for col in df_pivot_sorted.columns[3:]:
+        df_pivot_sorted[col] = df_pivot_sorted[col].apply(_format_value)
+
+    """ df_pivot_sorted = df_pivot_sorted[
+        df_pivot_sorted["Code_H"].apply(
+            lambda x: str(x).strip('.').split('.')[0] in ['1', '2', '3', '4']
+        )
+    ].reset_index(drop=True) """
+
+    return df_pivot_sorted
+
+@log_function_call
+def get_ret_dataframe(df_pivot: pd.DataFrame, param: dict[str, list]) -> pd.DataFrame:
+    if not param["groupes"] and not param["lignes"]:
+        return None
+    if param["groupes"]:
+        df_group = df_pivot[df_pivot[df_pivot.columns.levels[0][-2]].isin(param["groupes"])]
+    else:
+        df_group = df_pivot
+
+    if param['types_valeur']:
+        mask_typ = df_group.columns.get_level_values(1).isin(param['types_valeur'])
+        cols = df_group.columns[mask_typ].tolist()
+        meta_cols = [c for c in df_group.columns if c[0] in ("Groupe", "Code_H", "Ligne_Analytique")]
+        selected_cols = meta_cols + cols
+        df_val = df_group.loc[:, selected_cols]
+    else:
+        df_val = df_group
+
+    if param['annees']:
+        mask_yrs = df_val.columns.get_level_values(0).isin(param['annees'])
+        cols = df_val.columns[mask_yrs].tolist()
+        meta_cols = [c for c in df_val.columns if c[0] in ("Groupe", "Code_H", "Ligne_Analytique")]
+        selected_cols = meta_cols + cols
+        df_annee = df_val.loc[:, selected_cols]
+    else:
+        df_annee = df_val
+
+    if param['nature_ecriture']:
+        mask_nat = df_annee.columns.get_level_values(3).isin(param['nature_ecriture'])
+        cols = df_annee.columns[mask_nat].tolist()
+        meta_cols = [c for c in df_annee.columns if c[0] in ("Groupe", "Code_H", "Ligne_Analytique")]
+        selected_cols = meta_cols + cols
+        df_nature = df_annee.loc[:, selected_cols]
+    else:
+        df_nature = df_annee
+
+    if param["lignes"]:
+        df_lignes = df_nature[df_nature[df_nature.columns.levels[0][-4]].isin(param["lignes"])]
+    else:
+        df_lignes = df_nature
+
+    if param["mois"]:
+        if "Annuelle" in param['nature_ecriture']:
+            if 12 not in param['mois']:
+                param['mois'].append(12)
+        mask_mois = df_lignes.columns.get_level_values(2).isin(param['mois'])
+        cols = df_lignes.columns[mask_mois].tolist()
+        meta_cols = [c for c in df_lignes.columns if c[0] in ("Groupe", "Code_H", "Ligne_Analytique")]
+        selected_cols = meta_cols + cols
+        df_mois = df_lignes.loc[:, selected_cols]
+    else:
+        df_mois = df_lignes
+
+    return df_mois
+
+@log_function_call
+def transform_for_llm(df_pivot: pd.DataFrame|None) -> tuple:
+    """
+        - Génère un texte métrique optimisé pour l'entrée LLM.
+        - Détecte la présence de colonnes contextuelles (ex : 'Groupe', 'Code_H', 'Ligne_Analytique')
+          et construit un label 'Indicateur' consolidé à partir de ces informations.
+        - Requiert que les fonctions utilitaires _normalize_col et _format_euro_fr existent déjà.
+    Returns :
+        - metric_text : str, texte à fournir au LLM
+    """
+    if df_pivot is None:
+        return False, None
+
+    logger.info("transform_for_llm is used")
+    def _format_euro_fr(x: float, line: str) -> str:
+        """Format number in French style with 2 decimals and a non-breaking space thousands separator."""
+        if pd.isna(x):
+                return "N/A"
+        elif str(line).startswith("%"):
+            s = f"{x:,.2f}"
+            s = s.replace(",", " ")
+            return f"{s} %"
+        else:
+            s = f"{x:,.0f}"
+            s = s.replace(",", " ")
+            return f"{s} €"
+
+    def _normalize_col(col):
+        if isinstance(col, tuple):
+            # year is always at position 0
+            if len(col) >= 1:
+                year = str(col[0])
+            else:
+                year = "unknown"
+            # find Réel/Prévision/Budget if present in tuple (also accent-insensitive, lowercase!)
+            typ = next(
+                (str(x) for x in col if isinstance(x, str) and str(x).lower() in ("réel", "budget", "prévision", "prevision")),
+                None
+            )
+            if typ is None:
+                # fallback: any string in col
+                typ = next((str(x) for x in col if isinstance(x, str)), "Réel")
+
+            # try to recover nature and mois heuristically (commonly last two positions in tuple)
+            col_strs = [str(x) for x in col if isinstance(x, str)]
+
+            # We will look at positions from the end (to be robust to existing pivot structure)
+            # assume 'nature' (ex: Mensuelle, Annuelle) is very likely last, 'mois' just before, if present
+            if len(col) >= 3:
+                nature = str(col[-1]) if col[-1] is not None else None
+                mois = str(col[-2]) if col[-2] is not None else None
+                # If col[-1] (nature) is not a valid value, set to None
+                if not nature or nature.lower() in ("", "none", "nan"):
+                    nature = None
+                if not mois or mois.lower() in ("", "none", "nan"):
+                    mois = None
+            else:
+                nature = None
+                mois = None
+
+            return {"year": year, "type": typ, "nature": nature, "mois": mois}
+        else:
+            # fallback: not a tuple
+            year = str(col)
+            return {"year": year, "type": "Réel", "nature": None, "mois": None}
+
+    new_cols = list(df_pivot.columns)
+    for i, col in enumerate(df_pivot.columns):
+        if i >= 3:
+            col_as_list = list(col)
+            if col_as_list[1] == 'R':
+                col_as_list[1] = 'Réel'
+            elif col_as_list[1] == 'P':
+                col_as_list[1] = 'Prévision'
+            elif col_as_list[1] == 'B':
+                col_as_list[1] = 'Budget'
+            new_cols[i] = tuple(col_as_list)
+    df_pivot.columns = pd.MultiIndex.from_tuples(new_cols)
+    
+    df = df_pivot.copy()
+
+    # If index contains labels, reset to columns
+    if df.index.name is None or df.index.name == "":
+        df = df.reset_index()
+
+    # If there are contextual columns, build a consolidated 'Indicateur' column
+    context_cols = [c for c in ['Code_H', 'Ligne_Analytique', 'Indicateur'] if c in df.columns]
+
+    if len(context_cols) > 1:
+        # create a single descriptive indicator by joining available context columns (in order)
+        df['Indicateur_consolide'] = df[context_cols].astype(str).apply(
+            lambda row: " | ".join([str(x).strip() for x in row.values if str(x).strip() not in ['nan', 'None']]),
+            axis=1
+        )
+        # prefer the consolidated name
+        indicator_col = 'Indicateur_consolide'
+    else:
+        # detect a single indicator column if present, otherwise use first column
+        indicator_col = None
+        for possible in ['Ligne_Analytique', 'Indicateur', 'index', 0]:
+            if possible in df.columns:
+                indicator_col = possible
+                break
+        if indicator_col is None:
+            indicator_col = df.columns[0]
+        # if chosen indicator_col isn't already a string label, coerce to str
+        if indicator_col != 'Indicateur':
+            df[indicator_col] = df[indicator_col].astype(str)
+
+    # Ensure the DataFrame has a column named exactly 'Indicateur' used downstream
+    if indicator_col != 'Indicateur':
+        df = df.rename(columns={indicator_col: 'Indicateur'})
+    else:
+        # if it already is 'Indicateur', ensure string type
+        df['Indicateur'] = df['Indicateur'].astype(str)
+
+    value_cols = [c for c in df.columns if c != 'Indicateur']
+
+    rows = []
+    for _, row in df.iterrows():
+        # Avoid pandas row pretty-print for the indicator label
+        if isinstance(row['Indicateur'], pd.Series):
+            indicator_label = " | ".join(str(x).strip() for x in row['Indicateur'].values if str(x).strip() not in ['nan', 'None'])
+        else:
+            indicator_label = str(row['Indicateur']).strip()
+        for col in value_cols:
+            meta = _normalize_col(col)
+            year = meta.get('year', 'unknown')
+            typ = meta.get('type', 'Réel')
+            nature = meta.get('nature', 'unknown')
+            mois = meta.get('mois', 'unknown')
+            try:
+                val = row[col]
+            except Exception:
+                val = row.get(col, None)
+
+            # Try to keep numeric
+            numeric = None
+            if pd.api.types.is_numeric_dtype(type(val)):
+                try:
+                    numeric = float(val) if not pd.isna(val) else None
+                except Exception:
+                    numeric = None
+            else:
+                try:
+                    numeric = float(str(val).replace("€", "").replace("%", "").replace(" ", "").replace(",", "."))
+                except Exception:
+                    numeric = None
+
+            lbl = indicator_label.split(" | ")[-1]
+            txt = _format_euro_fr(numeric, lbl) if numeric is not None else "N/A"
+
+            rows.append({
+                'Indicateur': indicator_label,
+                'Année': year,
+                'Type': typ,
+                'Nature': nature,
+                'Mois': mois,
+                'Valeur_num': numeric,
+                'Valeur_txt': txt
+            })
+
+    df_long = pd.DataFrame(rows)
+
+    def _context_rank(typ):
+        t = str(typ).lower()
+        if "réel" in t:
+            return 0
+        if "prevision" in t or "prévision" in t:
+            return 1
+        if "budget" in t:
+            return 2
+        return 99
+
+    def _block_for_indicator(ind):
+        label = str(ind).strip()
+        lines = [f"[{label}]"]
+        sub = df_long[df_long['Indicateur'].astype(str).values == str(ind)].copy()
+
+        # Filter out technical garbage in 'Année'
+        sub = sub[~sub['Année'].astype(str).str.lower().isin(['groupe', 'indicateur', 'index'])]
+
+        # Attempt numeric year conversion for sorting; fallback keeps original order
+        sub_sorted = sub.copy()
+        try:
+            sub_sorted["Année_num"] = pd.to_numeric(sub_sorted["Année"], errors='coerce')
+        except Exception:
+            sub_sorted["Année_num"] = sub_sorted["Année"]
+
+        # First sort by Type context order, then by year
+        if 'Type' in sub_sorted.columns:
+            sub_sorted = sub_sorted.sort_values(
+                by=["Type", "Année_num"],
+                key=lambda col: col.map(_context_rank) if col.name == "Type" else col,
+                ascending=[True, True]
+            )
+        else:
+            sub_sorted = sub_sorted.sort_values(by=["Année_num"])
+
+        # Ensure ordering Réel -> Prévision -> Budget within each year
+        entries = []
+        for ctx in ["Réel", "Prévision", "Budget"]:
+            sub_ctx = sub_sorted[sub_sorted["Type"].astype(str).str.lower().str.contains(ctx.lower(), na=False)]
+            entries.append(sub_ctx)
+        if entries:
+            merged = pd.concat(entries)
+            merged = merged.drop_duplicates(subset=["Année", "Type", "Nature", "Mois"])
+        else:
+            merged = sub_sorted
+        
+        mois_str = [
+            'Janvier',
+            'Février',
+            'Mars',
+            'Avril',
+            'Mai',
+            'Juin',
+            'Juillet',
+            'Août',
+            'Septembre',
+            'Octobre',
+            'Novembre',
+            'Décembre'
+        ]
+        # Produce lines
+        for _, rr in merged.iterrows():
+            year = rr['Année']
+            typ = rr['Type']
+            nature = rr['Nature']
+            mois = rr['Mois']
+            txt = rr['Valeur_txt']
+            # Skip rows with completely empty or N/A values for non-year labels
+            if (pd.isna(year) or str(year).strip().lower() in ['nan', 'none', '']) and txt in ["0", "0 €", "N/A"]:
+                continue
+            if nature == "Annuelle":
+                lines.append(f"- {typ} {nature} {year}: {txt}")
+            else:
+                lines.append(f"- {typ} {mois_str[int(mois)-1]} {year}: {txt}")
+        return "\n".join(lines)
+
+    indicators = df_long['Indicateur'].drop_duplicates().tolist()
+    blocks = [_block_for_indicator(ind) for ind in indicators]
+
+    metric_text = "\n\n".join(blocks)
+
+    return True, metric_text
+
+""""""
 
 @log_function_call
 def count_tokens(text: str) -> int:
@@ -1307,9 +1720,10 @@ async def get_ext_data_for_llm(
         )
         simple_dict = create_simplified_hierarchy(res)
         param = await parse_user_query(question, synonymes_groupes, simple_dict)
-        if not param["types_valeur"]:
+        """ if not param["types_valeur"]:
             logger.warning(f"Impossible de préparer les prompts nécessaires: 'types_valeur' est vide.")
-            return param, None
+            return param, None """
+            
         datas = []
         success, prompt = await get_data_for_llm(context_data, simple_dict, sa_fk, form_fk, **param)
         if success:
