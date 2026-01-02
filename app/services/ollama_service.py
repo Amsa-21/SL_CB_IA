@@ -92,7 +92,7 @@ class Ollama:
                 if len(parts) > 1:
                     content = parts[1]
                 else:
-                    content = content, None
+                    content = content
                 return content
             else:
                 logger.error(f"Réponse invalide de l'API Ollama: {response.text}")
@@ -216,7 +216,7 @@ async def ask_ollama(
                             is_not_empty, prompt_data = transform_for_llm(ret_context_data)
 
         # Ne jamais écrire 'None' dans prompt_data.txt pour la data affichée
-        pd_str = prompt_data if prompt_data is not None else str(prompt_data)
+        pd_str = prompt_data if prompt_data is not None else "Vide"
         params_str = str(parametres) if parametres else "" 
 
         if full_query == "":
@@ -241,10 +241,10 @@ async def ask_ollama(
                 rules.append("Réponds en un seul paragraphe concise sans entrer dans les détails ligne à ligne.")
             """
             prompt = (
-                f"CONTEXTE: La section analytique ou résidence {str(context_data.iloc[1,0]).split(' - ')[1]} est analysées."
+                f"CONTEXTE: La section analytique ou résidence {str(context_data.iloc[1,0]).split(' - ')[1]} est analysées.\n"
                 "Règles de réponse:\n"
                 + "\n".join(rules) +
-                f"QUESTION: {question}\n"
+                f"\nQUESTION: {question}\n"
                 f"{pd_str}"
             )
         else:
